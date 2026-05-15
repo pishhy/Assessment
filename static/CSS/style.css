@@ -1,0 +1,48 @@
+body{
+    margin:0;
+    height:100vh;
+    background:#e51b23;
+    overflow:hidden;
+    font-family:sans-serif;
+  }
+  
+  .yellow-panel{
+    position:absolute;
+    width:120%;
+    height:45%;
+    background:#ffd400;
+    top:25%;
+    left:-10%;
+    transform:rotate(-4deg);
+    z-index:1;
+  }
+  
+  .white-top{
+    position:absolute;
+    width:120%;
+    height:18%;
+    background:white;
+    top:20%;
+    left:-10%;
+    transform:rotate(-4deg);
+    z-index:0;
+  }
+  
+  .white-bottom{
+    position:absolute;
+    width:120%;
+    height:18%;
+    background:white;
+    bottom:18%;
+    left:-10%;
+    transform:rotate(-4deg);
+    z-index:0;
+  }
+
+  #title{
+    font-size: 50px;
+    }
+
+  
+  
+  
