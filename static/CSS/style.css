@@ -14,7 +14,8 @@ body{
     top:25%;
     left:-10%;
     transform:rotate(-4deg);
-    z-index:1;
+    z-index: 0;
+  
   }
   
   .white-top{
@@ -22,7 +23,7 @@ body{
     width:120%;
     height:18%;
     background:white;
-    top:20%;
+    top:18%;
     left:-10%;
     transform:rotate(-4deg);
     z-index:0;
@@ -31,17 +32,53 @@ body{
   .white-bottom{
     position:absolute;
     width:120%;
-    height:18%;
+    height:15%;
     background:white;
-    bottom:18%;
+    bottom:15%;
     left:-10%;
     transform:rotate(-4deg);
     z-index:0;
   }
 
-  #title{
+  .header{
     font-size: 50px;
-    }
+    font-family: "Inika", serif;
+    font-style: normal;
+    display: flex;
+    align-items: center;  
+
+  }
+
+  #login{ 
+    margin-left: 1000px;
+    margin-bottom: 130px;
+  }
+
+
+
+  .logos{
+    align-items: center;
+  }
+
+  #Logo1{
+    position: fixed;
+    margin-top: 15px;
+  }
+
+  #Logo2{
+    position: absolute;
+    z-index: 10;
+    left: 300px;
+    margin-top: 60px;
+  }
+
+  #Logo3{
+    position: absolute;
+    z-index: 10;
+    left: 600px;
+    margin-bottom: 100px;
+  }
+  
 
   
   
