@@ -10,35 +10,42 @@
     <title>EVAN  BURGERS</title>
 </head>
 <body>
-    <!--This is the white panel design-->
-    <div class="white-top"></div>
-    <!--This is yellow panel design-->  
-    <div class="yellow-panel"></div>
-    <!--This is the white panel bottom design-->
-    <div class="white-bottom"></div>
+    <header>
+        <div class="header">
+            <div class="head">
+                <h1 id="title" >EVAN BURGERS</h1>
+            </div>
 
-    <div class="header">
-        <h1 id="title">EVAN BURGERS</h1>
-        <a href="Checkout.html">
-            <img src="static/images/Cart.png" alt="Cart logo" style="right: 0; top: 0; position: absolute;">
-        </a>
-        <div id="login">
-            <img src="/static/images/login.png" alt="login">
-        </div>
-    </div>
+            <div>
+                <a href="Checkout.html">
+                    <img src="static/images/Cart.png" alt="Cart logo" style="right: 0; top: 0; position: absolute;">
+                </a>
+                <div class="login">
+                    <a href="Logins.html">Log in</a>
+                </div>
+            </div>
 
+        </div>
+    </header>
 
-    <div class="logos">
-        <div id="Logo1">
-            <img src="static/images/Logo1.png" alt="EVAN BURGERS logo">
+    <main>
+        <div class="logos">
+            <div id="Logo1">
+                <img src="static/images/Logo1.png" alt="EVAN BURGERS logo">
+            </div>
+            <div id="Logo2">
+                <img src="static/images/Logo2.png" alt="burgers logo">
+            </div>
+            <div id="Logo3">
+                <img src="static/images/Logo3.png" alt="fire logo">
+            </div>
         </div>
-        <div id="Logo2">
-            <img src="static/images/Logo2.png" alt="burgers logo">
-        </div>
-        <div id="Logo3">
-            <img src="static/images/Logo3.png" alt="fire logo">
-        </div>
-    </div>
+    </main>
+
+    
+    <footer>
+        {% include "footer.html" %}
+    </footer>
     
 
 </body>
