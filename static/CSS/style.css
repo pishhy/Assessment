@@ -1,34 +1,36 @@
 body{
     margin:0;
     height:100vh;
-    background:#d17f05;
-    overflow:hidden;
+    background:#d6d0d0;
     font-family:sans-serif;
+    flex-direction: column;
+  }
+
+  main{
+    flex: 1;
   }
 
   footer{
     background-color:  rgb(170, 92, 3);
-    bottom: 0;
-    padding: 20px;
-    margin-top: 50px;
-    margin-bottom: 0%;
-    margin-left: 0%;
-    margin-right: 0%;
+    position: fixed;
+    padding-right: 100%;
+    font-size: 50px;
+    font-family: sans-serif;
+
   }
 
   .header{
     background-color: rgb(163, 90, 6);
-    font-size: 40px;
+    font-size: 200%;
     font-family: "Inika", serif;
     font-style: normal;
     display: flex;
     align-items: center;  
-    padding: 1px;
   }
-  
+
   .login{
-    margin-left: 1000px;
-    margin-bottom: 120px;
+    right: 0;
+    
   }
 
   a{
@@ -36,26 +38,23 @@ body{
   }
 
   .logos{
-    align-items: center;
+    transform: translate(-50);
+    
+    
   }
 
   #Logo1{
-    position: fixed;
-    margin-top: 15px;
+    
   }
 
   #Logo2{
-    position: absolute;
-    z-index: 10;
-    left: 300px;
-    margin-top: 60px;
+    
+
   }
 
   #Logo3{
-    position: absolute;
-    z-index: 10;
-    left: 600px;
-    margin-bottom: 100px;
+    
+
   }
   
 
