@@ -6,17 +6,13 @@ body{
     flex-direction: column;
   }
 
-  main{
-    flex: 1;
-  }
-
   footer{
     background-color:  rgb(170, 92, 3);
-    position: fixed;
     padding-right: 100%;
+    padding-top: 0.5%;
+    padding-bottom: 0.5%;
     font-size: 50px;
     font-family: sans-serif;
-
   }
 
   .header{
