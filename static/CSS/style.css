@@ -1,22 +1,24 @@
 body{
     margin:0;
     height:100vh;
-    background:#d6d0d0;
+    background: #FFD400;
     font-family:sans-serif;
-    flex-direction: column;
   }
 
   footer{
-    background-color:  rgb(170, 92, 3);
+    background-color: #B81A1A;
     padding-right: 100%;
     padding-top: 0.5%;
     padding-bottom: 0.5%;
-    font-size: 50px;
+  }
+
+  .footer-style{
+    font-size: 30px;
     font-family: sans-serif;
   }
 
   .header{
-    background-color: rgb(163, 90, 6);
+    background-color: #B81A1A;
     font-size: 200%;
     font-family: "Inika", serif;
     font-style: normal;
@@ -24,18 +26,27 @@ body{
     align-items: center;  
   }
 
-  .login{
-    right: 0;
-    
-  }
-
   a{
     color: black;
   }
 
-  .logos{
-    transform: translate(-50);
+  nav{
+   font-size: 40px;
+   margin-left: 60%;
+   margin-bottom: 1%;
+  }
+
+  #font-edit{
     
+  }
+
+  main p, h3{
+    font-size: 20px;
+    margin-left: 50%;
+
+  }
+
+  .logos{
     
   }
 
