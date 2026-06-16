@@ -31,40 +31,24 @@ body{
   }
 
   nav{
-   font-size: 40px;
-   margin-left: 60%;
-   margin-bottom: 1%;
+  grid-column: 2;
+  
+  font-size: 50px;
+  margin-top: 50px;
   }
 
-  #font-edit{
-    
-  }
 
-  main p, h3{
-    font-size: 20px;
-    margin-left: 50%;
-
+  main{
+    display: grid;
   }
 
   .logos{
-    
-  }
-
-  #Logo1{
-    
-  }
-
-  #Logo2{
-    
-
-  }
-
-  #Logo3{
-    
-
+    grid-column: 1;
   }
   
-
-  
+  main p, h3{
+    margin-top: 50%;
+    grid-column: 2;
+  }
   
   
