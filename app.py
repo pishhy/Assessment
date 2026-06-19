@@ -10,5 +10,9 @@ app = Flask(__name__)
 def home():
     return render_template('home.html')
 
+@app.route('/menu')
+def menu():
+    return render_template('menus.html')
+
 if __name__ == "__main__":
     app.run(debug=True)

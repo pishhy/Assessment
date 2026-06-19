@@ -11,33 +11,16 @@
 </head>
 <body>
     <header>
-        <div class="header">
-            <div class="head">
-                <h1 id="title" >EVAN BURGERS</h1>
-            </div>
-
-            <div>
-                <div class="login">
-                    <a href="Logins.html" style="right: 0; position: absolute; top: 0; align-items: center;">Login</a>
-                </div>
-            </div>
-
-        </div>
+        {% include "layout.html" %}
     </header>
+
 
             
     <main>
-
-        <nav>
-            <div>
-                <a href="Menu.html" style=" background-color: black; color: #C78D22; padding: 1%; border-radius: 20%;">Menu</a>
-            </div>
-
-            <div>
-                <a href="Checkout.html" style="background-color: black; color: #C78D22; padding: 1%; border-radius: 20%;">Cart</a>
-            </div>
-        </nav>
-
+            <ul class="nav">
+                <li><a href="/menu" style="background-color: black; color: #C78D22; padding: 10%; border-radius: 20%;">Menu</a></li>
+                <li><a href="/menu" style="background-color: black; color: #C78D22; padding: 10%; border-radius: 20%; margin-left: 100%;">Cart</a></li>
+            </ul>
 
         <div class="logos">
             <div id="Logo1">
@@ -55,11 +38,6 @@
 
     </main>
 
-    
-    <footer>
-        {% include "footer.html" %}
-    </footer>
-    
 
 </body>
 </html>

@@ -10,6 +10,10 @@ body{
     padding-right: 100%;
     padding-top: 0.5%;
     padding-bottom: 0.5%;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
   }
 
   .footer-style{
@@ -26,15 +30,37 @@ body{
     align-items: center;  
   }
 
-  a{
-    color: black;
+  header h1, a{
+    display: inline-block;
   }
 
-  nav{
+  header a{
+  }
+
+  a{
+    color: black;
+    text-decoration: none;
+    margin-left: 70%;
+  }
+
+  .contact{
+    margin-left: 4%;
+  }
+
+
+
+  .nav{
   grid-column: 2;
-  
-  font-size: 50px;
-  margin-top: 50px;
+  font-size: 20px;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  }
+
+  .nav li{
+    display: inline-block;
+    font-size: 50px;
+    margin-top: 50px;
   }
 
 
@@ -47,7 +73,8 @@ body{
   }
   
   main p, h3{
-    margin-top: 50%;
+    font-size: 20px;
+    margin-top: 30%;
     grid-column: 2;
   }
   
