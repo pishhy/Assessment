@@ -37,10 +37,14 @@ body{
     margin-left: 70%;
   }
 
+  .contact{
+    margin-left: 70%;
+  }
+
   a{
     color: black;
     text-decoration: none;
-    margin-left: 70%;
+    padding: 10%;
   }
 
   .contact{
