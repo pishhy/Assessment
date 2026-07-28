@@ -30,8 +30,7 @@ def home():
 
 @app.route('/menu')
 def menu():
-    sql = """SELECT burgers, price, photo
-    FROM products"""
+    sql = """SELECT burgers, price, photo FROM products"""
     results = query_db(sql)
     return render_template('menus.html', results=results)
 
