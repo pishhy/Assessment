@@ -36,10 +36,11 @@ def menu():
     return render_template('menus.html', results=results)
 
 
-@app.route("/menu/<int:id>")
-def menu(id):
+@app.route("/base/<int:id>")
+def base(id):
     sql = """SELECT burgers, price, photo FROM products"""
-    result = query_db
+    result = query_db(sql, (id,), True)
+    return str(result)
 
 
 @app.route('/contact')
