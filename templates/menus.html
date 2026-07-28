@@ -1,9 +1,19 @@
 {% extends "layout.html" %}
 {% block body %}
+<div class="menu-container">
+    {% for burgers in burgers %}
+    <div class="menu-card">
+        
+        <img src="{{ burger['photo'] }}"
+            alt="{{ burgers['burgers'] }}">
 
-    <div>
-        <img src="{{ baseimage[3] }}" alt="photo">
+        <h2>{{ burger['burgers']}}</h2>
+
+        <p>${{ burger['price']}}</p>
+
+
     </div>
-
+    {% endfor %}
+</div>
 
 {% endblock %}
