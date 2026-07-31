@@ -29,15 +29,11 @@ def home():
 
 @app.route('/menu')
 def menu():
-    sql = """
-    SELECT burgers, price, photo
-    FROM products
-    """
-    burgers = query_db(sql)
+    sql = "SELECT burgers, price, photo FROM products"
+    results = query_db(sql)
+    return render_template("menus.html", results=results)
 
-    print("RESULT:", burgers)
 
-    return str(burgers)
 
 @app.route('/contact')
 def contact():
@@ -50,9 +46,6 @@ def login():
 @app.route('/cart')
 def cart():
     return render_template('cart.html')
-
-
-
 
 if __name__ == "__main__":
     app.run(debug=True)
