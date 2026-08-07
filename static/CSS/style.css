@@ -5,6 +5,7 @@ body{
     font-family:sans-serif;
   }
 
+
   footer{
     background-color: #B81A1A;
     padding-right: 100%;
@@ -15,10 +16,12 @@ body{
     left: 0;
   }
 
+
   .footer-style{
     font-size: 30px;
     font-family: sans-serif;
   }
+
 
   .header{
     background-color: #B81A1A;
@@ -28,6 +31,7 @@ body{
     display: flex;
     align-items: center;
   }
+
 
   header h1, a{
     display: inline-block;
@@ -39,16 +43,19 @@ body{
     margin-left: 1%;
   }
 
+
   a{
     color: black;
     text-decoration: none;
     padding: 10%;
-    
   }
+
 
   .contact{
     margin-left: 4%;
   }
+
+
 
 
   .nav{
@@ -60,7 +67,8 @@ body{
   display: flex;
   gap: 40%;
   }
-  
+ 
+
 
   .nav li{
     margin: 0;
@@ -70,9 +78,11 @@ body{
     margin-top: 40px;
   }
 
+
   main{
     display: grid;
   }
+
 
   .logos{
     grid-column: 1;
@@ -80,12 +90,50 @@ body{
     margin: 0;
     padding:0;
   }
-  
+ 
+
 
   main p, h3{
     font-size: 20px;
     margin-top: 30%;
     grid-column: 2;
   }
-  
-  
+
+
+.burger-grid{
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 20%;
+  flex-wrap: wrap;
+  padding: 60px 20px;
+}
+ 
+.burger-card{
+  background: transparent;
+  text-align: center;
+  width: 220px;
+}
+ 
+.burger-card img{
+  width: 100%;
+  height: 180px;
+  object-fit: contain;
+}
+ 
+.burger-card h2{
+  font-size: 20px;
+  font-weight: bold;
+  color: #1a1a1a;
+  margin-top: 10px;
+}
+ 
+.burger-card p{
+  font-size: 18px;
+  color: #B81A1A;
+  font-weight: bold;
+}
+ 
+ 
+ 
+

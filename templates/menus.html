@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+{% block content %}
+
+
+<div class="burger-grid">
+    {% for item in results %}
+    <div class="burger-card">
+        <img src="/{{ item.photo }}" alt="{{ item.burgers }}">
+        <h2>{{ item.burgers }}</h2>
+        <p>{{ item.price }}</p>
+        <h3>Ingredients: </h3>
+        <p>{{ item.ingredients}}</p>
+        <h3>Condiments: </h3>
+        <p>{{ item.condiments}}</p>
+    </div>
+    {% endfor %}
+</div>
+
+
+{% endblock %}
+

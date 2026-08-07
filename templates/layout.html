@@ -10,29 +10,38 @@
     <title>EVAN BURGERS</title>
 </head>
 
+
 <body>
     <header>
         <div class="header">
             <div class="head">
-                <a href="/">EVAN BURGERS</a>
+                <a href="/"><img src="static/images/download.png" alt="Burger logo" style="width: 50%; padding: 0; margin: 0;" >
+                    </a>
             </div>
-    
+
+
             <div>
                 <div class="log">
                     <a href="/login">Login</a>
                 </div>
             </div>
 
+
             <div class="con">
                 <a href="/contact">contact</a>
             </div>
-    
         </div>
     </header>
+
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
 
     <footer>
         {% include "footer.html" %}
     </footer>
-
 </body>
 </html>
+
