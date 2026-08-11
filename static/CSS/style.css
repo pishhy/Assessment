@@ -23,40 +23,18 @@ body{
   }
 
 
-  .header{
+
+  header{
     background-color: #B81A1A;
-    font-size: 200%;
-    font-family: "Inika", serif;
-    font-style: normal;
-    display: flex;
-    align-items: center;
-  }
-
-
-  header h1, a{
-    display: inline-block;
-  }
-
-
-
-  .con{
-    margin-left: 1%;
+    gap: 5px;
+    display: ;
   }
 
 
   a{
     color: black;
     text-decoration: none;
-    padding: 10%;
   }
-
-
-  .contact{
-    margin-left: 4%;
-  }
-
-
-
 
   .nav{
   margin: 0;
