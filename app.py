@@ -16,8 +16,6 @@ def get_db():
     return db
 
 
-
-
 @app.teardown_appcontext
 def close_connection(exception):
     db = getattr(g, '_database', None)
@@ -44,6 +42,12 @@ def menu():
     return render_template("menus.html", results=results)
 
 
+@app.route('/sides')
+def sides():
+    drinks = query_db("SELECT sides, price, photo FROM sides WHERE description='drink'")
+    sauces = query_db("SELECT sides, price, photo FROM sides WHERE description='sauce'")
+    food_sides = query_db("SELECT sides, price, photo FROM sides WHERE description='side'")
+    return render_template("sides.html", drinks=drinks, sauces=sauces, food_sides=food_sides)
 
 
 @app.route('/contact')
@@ -63,7 +67,3 @@ def cart():
 
 if __name__ == "__main__":
     app.run(debug=True)
-
-
-
-
