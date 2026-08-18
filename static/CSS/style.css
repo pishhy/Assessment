@@ -1,6 +1,6 @@
 body{
     margin:0;
-    height:100vh;
+    min-height: 100vh;
     background: #FFD400;
     font-family:sans-serif;
   }
@@ -23,23 +23,28 @@ body{
   }
 
 
-
-  header{
+header {
     background-color: #B81A1A;
-  }
+}
 
-  .header{
+.header {
+    display: flex;
+    align-items: center;         
+    justify-content: space-between;
+    padding: 15px 60px;          
+}
+
+.header a {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 10px 30px;
-  }
+}
 
-  .header img{
-    width: 10px;
-    height: auto;
+.header img {
+    height: 110px;
+    width: auto;
     display: block;
-  }
+}
 
 
   a{
@@ -84,7 +89,7 @@ body{
 
   main p, h3{
     font-size: 20px;
-    margin-top: 30%;
+    margin-top: 10%;
     grid-column: 2;
   }
 
@@ -125,11 +130,15 @@ body{
 
 
 .menus-sides-button{
-  border: 5%;
-  padding: 5%;
-  margin-bottom: 5%;
-  margin-left: 70%;
-  font-size: 50px;
+  display: inline-block;
+  background-color: #000000;
+  color: #FFD400;
+  padding: 10px 20px;         
+  border-radius: 8px;
+  font-size: 18px;
+  font-weight: bold;
+  text-decoration: none;
+  border: none;
 }
 
 .sides-columns{
