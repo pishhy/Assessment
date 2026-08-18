@@ -1,0 +1,66 @@
+{% extends "layout.html" %}
+{% block content %}
+ 
+<div class="sides-columns">
+ 
+    <div class="sides-column">
+        <h3>Drinks:</h3>
+        <img id="drink-preview" class="side-preview"
+             src="{{ '/' ~ drinks[0].photo if drinks else '' }}"
+             alt="drink preview">
+        <select id="drink-select" class="sides-dropdown" onchange="updateSidePreview('drink')">
+            {% for item in drinks %}
+            <option value="{{ item.sides }}" data-photo="/{{ item.photo }}" data-price="{{ item.price }}">
+                {{ item.sides }}
+            </option>
+            {% endfor %}
+        </select>
+        <button type="button" class="add-now-btn">Add Now</button>
+    </div>
+ 
+    <div class="sides-column">
+        <h3>Sauce:</h3>
+        <img id="sauce-preview" class="side-preview"
+             src="{{ '/' ~ sauces[0].photo if sauces else '' }}"
+             alt="sauce preview">
+        <select id="sauce-select" class="sides-dropdown" onchange="updateSidePreview('sauce')">
+            {% for item in sauces %}
+            <option value="{{ item.sides }}" data-photo="/{{ item.photo }}" data-price="{{ item.price }}">
+                {{ item.sides }}
+            </option>
+            {% endfor %}
+        </select>
+        <button type="button" class="add-now-btn">Add Now</button>
+    </div>
+ 
+    <div class="sides-column">
+        <h3>Food sides</h3>
+        <img id="food_sides-preview" class="side-preview"
+             src="{{ '/' ~ food_sides[0].photo if food_sides else '' }}"
+             alt="food side preview">
+        <select id="food_sides-select" class="sides-dropdown" onchange="updateSidePreview('food_sides')">
+            {% for item in food_sides %}
+            <option value="{{ item.sides }}" data-photo="/{{ item.photo }}" data-price="{{ item.price }}">
+                {{ item.sides }}
+            </option>
+            {% endfor %}
+        </select>
+        <button type="button" class="add-now-btn">Add Now</button>
+    </div>
+ 
+</div>
+ 
+<div class="checkout-row">
+    <a href="/cart" class="checkout-link">Checkout &#8594;</a>
+</div>
+ 
+<script>
+    function updateSidePreview(type) {
+        const select = document.getElementById(type + '-select');
+        const img = document.getElementById(type + '-preview');
+        const selected = select.options[select.selectedIndex];
+        img.src = selected.getAttribute('data-photo');
+    }
+</script>
+ 
+{% endblock %}

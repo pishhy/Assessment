@@ -26,8 +26,19 @@ body{
 
   header{
     background-color: #B81A1A;
-    gap: 5px;
-    display: ;
+  }
+
+  .header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 30px;
+  }
+
+  .header img{
+    width: 60px;
+    height: auto;
+    display: block;
   }
 
 
@@ -111,7 +122,61 @@ body{
   color: #B81A1A;
   font-weight: bold;
 }
- 
- 
- 
 
+.sides-columns{
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  gap: 40px;
+  padding: 60px 20px 20px;
+}
+
+.sides-column{
+  text-align: left;
+  width: 220px;
+}
+
+.sides-column h3{
+  font-size: 20px;
+  margin: 0 0 10px;
+  grid-column: unset;
+}
+
+.side-preview{
+  display: block;
+  width: 180px;
+  height: 140px;
+  object-fit: contain;
+  margin-bottom: 10px;
+}
+
+.sides-dropdown{
+  display: block;
+  width: 100%;
+  padding: 8px;
+  font-size: 16px;
+  margin-bottom: 12px;
+}
+
+.add-now-btn{
+  background-color: #B81A1A;
+  color: #FFD400;
+  border: none;
+  padding: 8px 18px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.checkout-row{
+  display: flex;
+  justify-content: flex-end;
+  padding: 20px 30px;
+}
+
+.checkout-link{
+  color: black;
+  font-weight: bold;
+  font-size: 20px;
+}
