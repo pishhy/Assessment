@@ -12,12 +12,13 @@
         <p>{{ item.ingredients }}</p>
         <h3>Condiments: </h3>
         <p>{{ item.condiments }}</p>
+        <button type="button" class="add-now-btn">Add Now</button>
     </div>
     {% endfor %}
 </div>
 
-<div>
-    <li><a href="/sides" style="background-color: black; color: #C78D22; padding: 10%; border-radius: 20%;">Sides</a></li>
+<div class="menus-sides-button">
+    <ul><a href="/sides" style="background-color: black; color: #C78D22;">Sides</a></ul>
 </div>
 
 {% endblock %}

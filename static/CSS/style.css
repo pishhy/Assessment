@@ -31,12 +31,12 @@ body{
   .header{
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     padding: 10px 30px;
   }
 
   .header img{
-    width: 60px;
+    width: 10px;
     height: auto;
     display: block;
   }
@@ -121,6 +121,15 @@ body{
   font-size: 18px;
   color: #B81A1A;
   font-weight: bold;
+}
+
+
+.menus-sides-button{
+  border: 5%;
+  padding: 5%;
+  margin-bottom: 5%;
+  margin-left: 70%;
+  font-size: 50px;
 }
 
 .sides-columns{
