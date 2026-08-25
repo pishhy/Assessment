@@ -198,3 +198,13 @@ header {
   font-weight: bold;
   font-size: 20px;
 }
+
+.login-container{
+  display:block;
+  margin-top: 10%;
+  border: 50%;
+  background-color: #B81A1A;
+  text-align:center;
+  box-sizing: border-box;
+
+}

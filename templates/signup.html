@@ -1,10 +1,9 @@
 {% extends "layout.html" %}
 {% block content %}
-<div class="login-container">
-    <h2>Before we order, let's get some of your details!</h2>
-    <p>If you're a first-time user, please <a href="/signup">Sign Up</a> first!</p>
+<div class="signup-container">
 
-    <form action="/login" method="post" class="login-form">
+    <h2>Before we order, let's get some of your details!</h2>
+    <form action="/login" method="post" class="signup-form">
         <div class="login-group">
             <label for="username">Username</label>
             <input type="text" maxlength="25" name="username" class="style-input" required>
@@ -14,9 +13,16 @@
             <input type="text" name="password" class="style-input" required>
         </div>
 
+        <div class="login-group">
+            <label for="Addy">Address</label>
+            <input type="text" name="Addy" class="style-input" required>
+        </div>
 
 
-        <button type="submit" class="auth-form-button">Login</button>
+
+
+
+        <button type="submit" class="auth-form-button">Sign up</button>
     </form>
 </div>
 {% endblock %}
