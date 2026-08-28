@@ -1,22 +1,23 @@
 {% extends "layout.html" %}
 {% block content %}
 <div class="login-container">
-    <h2>Before we order, let's get some of your details!</h2>
+    <h2>Hiiiii, lets get your information!</h2>
     <p>If you're a first-time user, please <a href="/signup">Sign Up</a> first!</p>
 
     <form action="/login" method="post" class="login-form">
+
         <div class="login-group">
             <label for="username">Username</label>
             <input type="text" maxlength="25" name="username" class="style-input" required>
         </div>
+
         <div class="login-group">
             <label for="password">Password</label>
             <input type="text" name="password" class="style-input" required>
         </div>
 
-
-
-        <button type="submit" class="auth-form-button">Login</button>
+        <button type="submit" class="form-button">Login</button>
     </form>
 </div>
+
 {% endblock %}

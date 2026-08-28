@@ -128,18 +128,21 @@ header {
   font-weight: bold;
 }
 
-
-.menus-sides-button{
-  display: inline-block;
+.menus-sides-button {
+  display: block;
+  width: fit-content;     
+  margin: 20px 60px 0 auto;
+  padding: 10px 20px;
   background-color: #000000;
-  color: #FFD400;
-  padding: 10px 20px;         
-  border-radius: 8px;
-  font-size: 18px;
-  font-weight: bold;
-  text-decoration: none;
-  border: none;
+  text-align: center;
+  box-sizing: border-box;
+  border-radius: 8px; 
 }
+
+.menus-sides-button a{
+  color: rgb(189, 115, 5);
+}
+
 
 .sides-columns{
   display: flex;
@@ -198,13 +201,22 @@ header {
   font-weight: bold;
   font-size: 20px;
 }
+.login-container {
+    width: 50%;
+    margin: 5% auto;        
+    padding: 10%;        
+    background-color: #B81A1A;
+    text-align: center;
+    box-sizing: border-box;
+    border-radius: 20px;    
+}
 
-.login-container{
-  display:block;
-  margin-top: 10%;
-  border: 50%;
-  background-color: #B81A1A;
-  text-align:center;
-  box-sizing: border-box;
-
+.signup-container {
+    width: 50%;
+    margin: 5% auto;        
+    padding: 10%;        
+    background-color: #B81A1A;
+    text-align: center;
+    box-sizing: border-box;
+    border-radius: 20px;    
 }
