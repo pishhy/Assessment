@@ -1,24 +1,24 @@
 body{
-    margin:0;
-    min-height: 100vh;
-    background: #FFD400;
-    font-family:sans-serif;
+    margin:0; /* removes the browser's default spacing around the page edges */
+    min-height: 100vh; /* makes the body at least as tall as the full screen, even with little content */
+    background: #FFD400; /* sets the page background to yellow */
+    font-family:sans-serif; /* sets the default font for the whole page */
   }
 
 
   footer{
-    background-color: #B81A1A;
-    padding-right: 100%;
+    background-color: #B81A1A; /* sets the footer background to red */
+    padding-right: 100%; /* pushes padding all the way across, forcing the footer to stay full width */
     padding-top: 0.5%;
     padding-bottom: 0.5%;
-    position: fixed;
-    bottom: 0;
-    left: 0;
+    position: fixed; /* keeps the footer glued to the same spot even when the page scrolls */
+    bottom: 0; /* sticks the footer to the bottom of the screen */
+    left: 0; /* lines the footer up with the left edge of the screen */
   }
 
 
   .footer-style{
-    font-size: 30px;
+    font-size: 30px; /* sets how large this text appears */
     font-family: sans-serif;
   }
 
@@ -28,38 +28,38 @@ header {
 }
 
 .header {
-    display: flex;
-    align-items: center;         
-    justify-content: space-between;
-    padding: 15px 60px;          
+    display: flex; /* lines up the header's children in a row so they can be aligned/spaced */
+    align-items: center;         /* centers the header's children vertically */
+    justify-content: space-between;   /* spreads the header's children out with space between them */
+    padding: 15px 60px;          /* adds breathing room inside the header, more on the sides than top/bottom */
 }
 
 .header a {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: center; /* centers the header's children horizontally too */
 }
 
 .header img {
-    height: 110px;
-    width: auto;
-    display: block;
+    height: 110px; /* sets a fixed height for the logo image */
+    width: auto; /* lets the width scale automatically so the logo isn't stretched */
+    display: block; /* removes the small gap browsers add under inline images */
 }
 
 
   a{
-    color: black;
-    text-decoration: none;
+    color: black; /* sets link text color */
+    text-decoration: none; /* removes the default underline from links */
   }
 
   .nav{
   margin: 0;
-  top: 0;
-  grid-column: 2;
+  top: 0; /* has no visual effect here since this isn't a positioned element, but reserved in case position gets added later */
+  grid-column: 2; /* places this element in the second column of a parent grid layout */
   font-size: 20px;
-  list-style-type: none;
+  list-style-type: none; /* removes the bullet points from this list */
   display: flex;
-  gap: 40%;
+  gap: 40%; /* adds space between the nav items, sized relative to the container width */
   }
  
 
@@ -67,19 +67,19 @@ header {
   .nav li{
     margin: 0;
     padding: 0;
-    display: inline-block;
+    display: inline-block; /* lets each nav item sit side-by-side while still accepting width/height/margin */
     font-size: 50px;
     margin-top: 40px;
   }
 
 
   main{
-    display: grid;
+    display: grid; /* arranges main's children into a grid layout */
   }
 
 
   .logos{
-    grid-column: 1;
+    grid-column: 1; /* places this element in the first column of the grid */
     width:auto;
     margin: 0;
     padding:0;
@@ -97,14 +97,14 @@ header {
 .burger-grid{
   display: flex;
   justify-content: center;
-  align-items: flex-end;
+  align-items: flex-end; /* lines up the burger cards along their bottoms instead of centering them */
   gap: 20%;
-  flex-wrap: wrap;
+  flex-wrap: wrap; /* lets cards drop to a new row instead of overflowing when space runs out */
   padding: 60px 20px;
 }
  
 .burger-card{
-  background: transparent;
+  background: transparent; /* lets the yellow page background show through the card */
   text-align: center;
   width: 220px;
 }
@@ -112,12 +112,12 @@ header {
 .burger-card img{
   width: 100%;
   height: 180px;
-  object-fit: contain;
+  object-fit: contain; /* shrinks/scales the image to fit the box without cropping or distorting it */
 }
  
 .burger-card h2{
   font-size: 20px;
-  font-weight: bold;
+  font-weight: bold; /* makes the heading text bold */
   color: #1a1a1a;
   margin-top: 10px;
 }
@@ -129,14 +129,14 @@ header {
 }
 
 .menus-sides-button {
-  display: block;
-  width: fit-content;     
+  display: block; /* makes the button take its own line and accept width/margin like a block element */
+  width: fit-content;     /* shrinks the button width down to just fit its text instead of stretching full width */
   margin: 20px 60px 0 auto;
   padding: 10px 20px;
   background-color: #000000;
   text-align: center;
-  box-sizing: border-box;
-  border-radius: 8px; 
+  box-sizing: border-box; /* makes padding/border count inside the width instead of adding to it */
+  border-radius: 8px; /* rounds the corners of the button */
 }
 
 .menus-sides-button a{
@@ -160,7 +160,7 @@ header {
 .sides-column h3{
   font-size: 20px;
   margin: 0 0 10px;
-  grid-column: unset;
+  grid-column: unset; /* cancels out the grid-column set on the general "h3" rule above so this h3 isn't forced into a column */
 }
 
 .side-preview{
@@ -182,12 +182,12 @@ header {
 .add-now-btn{
   background-color: #B81A1A;
   color: #FFD400;
-  border: none;
+  border: none; /* removes the default button border */
   padding: 8px 18px;
   font-size: 16px;
   font-weight: bold;
   border-radius: 4px;
-  cursor: pointer;
+  cursor: pointer; /* shows a hand cursor on hover to signal the element is clickable */
 }
 
 .checkout-row{
@@ -201,22 +201,96 @@ header {
   font-weight: bold;
   font-size: 20px;
 }
-.login-container {
-    width: 50%;
-    margin: 5% auto;        
-    padding: 10%;        
-    background-color: #B81A1A;
-    text-align: center;
-    box-sizing: border-box;
-    border-radius: 20px;    
+
+/* Wrapper that centers the auth card on the yellow page background */
+.auth-page{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5% 20px;
 }
 
-.signup-container {
-    width: 50%;
-    margin: 5% auto;        
-    padding: 10%;        
-    background-color: #B81A1A;
-    text-align: center;
-    box-sizing: border-box;
-    border-radius: 20px;    
+/* The red card itself, same rounded-rectangle shape*/
+.auth-card{
+  width: 100%;
+  max-width: 380px; /* stops the card from getting too wide on large screens */
+  background-color: #B81A1A;
+  border-radius: 20px;
+  padding: 40px 30px;
+  box-sizing: border-box;
+  text-align: left;
+}
+
+/* Title text at the top of the card */
+.auth-title{
+  color: #FFD400;
+  text-align: center;
+  margin: 0 0 10px;
+}
+
+/* Small helper text under the title (login page only) */
+.auth-subtext{
+  color: #fff;
+  text-align: center;
+  font-size: 14px;
+  margin: 0 0 25px;
+}
+
+.auth-link{
+  color: #FFD400;
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+/* One label + input group, stacked like each row in the reference image */
+.auth-field{
+  margin-bottom: 20px;
+}
+
+.auth-field label{
+  display: block;
+  color: #FFD400;
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+
+/* Positions the icon inside the right edge of the input */
+.auth-input-wrap{
+  position: relative; /* lets the icon inside be placed relative to this box using "absolute" */
+}
+
+/* The pill-shaped white input field, matching the reference mockup's rounded style */
+.auth-input{
+  width: 100%;
+  padding: 12px 40px 12px 16px; /* extra space on the right so typed text doesn't run under the icon */
+  border: none;
+  border-radius: 25px;
+  font-size: 15px;
+  box-sizing: border-box;
+}
+
+/* Icon sitting inside the input on the right side */
+.auth-icon{
+  position: absolute; /* pulls the icon out of normal flow so it can float inside the input */
+  right: 14px; /* distance from the right edge of the input */
+  top: 50%; /* starts the icon at the vertical middle of the input... */
+  transform: translateY(-50%); /* ...then shifts it up by half its own height so it's perfectly centered */
+  font-size: 16px;
+  pointer-events: none; /* lets clicks pass through the icon to the input underneath it */
+}
+
+/* Login/Signup submit buttons, styled to match the card's rounded look */
+.form-button, .auth-form-button{
+  display: block;
+  width: 100%;
+  margin-top: 10px;
+  padding: 12px;
+  border: none;
+  border-radius: 25px;
+  background-color: #FFD400;
+  color: #B81A1A;
+  font-weight: bold;
+  font-size: 16px;
+  cursor: pointer;
 }

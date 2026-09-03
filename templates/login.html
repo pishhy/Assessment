@@ -1,23 +1,48 @@
+<!-- tells Flask/Jinja this page fills in the "content" block defined in layout.html -->
 {% extends "layout.html" %}
+<!-- marks the start of the content this page injects into layout.html -->
 {% block content %}
-<div class="login-container">
-    <h2>Hiiiii, lets get your information!</h2>
-    <p>If you're a first-time user, please <a href="/signup">Sign Up</a> first!</p>
+<!-- outer wrapper that centers the card on the yellow page background -->
+<div class="auth-page">
+    <!-- red card box that holds the whole login form -->
+    <div class="auth-card">
+        <!-- page heading shown at the top of the card -->
+        <h2 class="auth-title">Hiiiii, lets get your information!</h2>
+        <!-- helper text with a link pointing new users to the signup page -->
+        <p class="auth-subtext">If you're a first-time user, please <a href="/signup" class="auth-link">Sign Up</a> first!</p>
 
-    <form action="/login" method="post" class="login-form">
+        <!-- form that sends the username/password to /login using POST when submitted -->
+        <form action="/login" method="post" class="login-form">
 
-        <div class="login-group">
-            <label for="username">Username</label>
-            <input type="text" maxlength="25" name="username" class="style-input" required>
-        </div>
+            <!-- wrapper for one label + input pair -->
+            <div class="auth-field">
+                <!-- visible text label linked to the username input below via "for" -->
+                <label for="username">Username</label>
+                <!-- positions the icon span inside the input that follows -->
+                <div class="auth-input-wrap">
+                    <!-- text box for the username, capped at 25 characters, required before the form can submit -->
+                    <input type="text" id="username" maxlength="25" name="username" class="auth-input" required>
+                <!-- closes the icon-positioning wrapper -->
+                </div>
+            <!-- closes this label+input field group -->
+            </div>
 
-        <div class="login-group">
-            <label for="password">Password</label>
-            <input type="text" name="password" class="style-input" required>
-        </div>
+            <div class="auth-field">
+                <label for="password">Password</label>
+                <div class="auth-input-wrap">
+                    <!-- password box; type="password" masks each character as a dot while typing -->
+                    <input type="password" id="password" name="password" class="auth-input" required>
+                </div>
+            </div>
 
-        <button type="submit" class="form-button">Login</button>
-    </form>
+            <!-- submits the form to /login when clicked -->
+            <button type="submit" class="form-button">Login</button>
+        <!-- closes the <form> -->
+        </form>
+    <!-- closes the auth-card -->
+    </div>
+<!-- closes the auth-page wrapper -->
 </div>
 
+<!-- marks the end of the content block started above -->
 {% endblock %}

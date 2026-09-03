@@ -1,21 +1,40 @@
 {% extends "layout.html" %}
 {% block content %}
-<div class="signup-container">
-    <h1>Signup</h1>
-    <form action="/signup" method="post" class="signup-form">
-        <div class="signup-group">
-            <label for="username">Username</label>
-            <input type="text"  minlength="5" maxlength="25" name="username" class="style-input" required>
-        </div>
-        <div class="signup-group">
-            <label for="password">Password</label>
-            <input type="text" minlength="5" name="password" class="style-input" required>
-        </div>
-        <div class="signup-group">
-            <label for="address">Address</label>
-            <input type="text"  minlength="5" maxlength="50" name="address" class="style-input" required>
-        </div>
-        <button type="submit" class="auth-form-button">Signup</button>
-    </form>
+<!-- same auth-page/auth-card wrapper as login.html, so both pages look consistent -->
+<div class="auth-page">
+    <div class="auth-card">
+        <!-- page heading shown at the top of the card -->
+        <h1 class="auth-title">Signup</h1>
+        <!-- form that sends username/password/address to /signup using POST when submitted -->
+        <form action="/signup" method="post" class="signup-form">
+
+            <div class="auth-field">
+                <label for="username">Username</label>
+                <div class="auth-input-wrap">
+                    <!-- username box; must be between 5 and 25 characters, required to submit -->
+                    <input type="text" id="username" minlength="5" maxlength="25" name="username" class="auth-input" required>
+                </div>
+            </div>
+
+            <div class="auth-field">
+                <label for="password">Password</label>
+                <div class="auth-input-wrap">
+                    <!-- password box; must be at least 5 characters, masked as dots while typing -->
+                    <input type="password" id="password" minlength="5" name="password" class="auth-input" required>
+                </div>
+            </div>
+
+            <div class="auth-field">
+                <label for="address">Address</label>
+                <div class="auth-input-wrap">
+                    <!-- address box; must be between 5 and 50 characters, required to submit -->
+                    <input type="text" id="address" minlength="5" maxlength="50" name="address" class="auth-input" required>
+                </div>
+            </div>
+
+            <!-- submits the form to /signup when clicked -->
+            <button type="submit" class="auth-form-button">Signup</button>
+        </form>
+    </div>
 </div>
 {% endblock %}
