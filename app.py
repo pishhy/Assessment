@@ -1,5 +1,6 @@
-from flask import Flask, g, render_template
 import sqlite3
+from flask import Flask, render_template, session, flash, redirect, request, g
+from werkzeug.security import generate_password_hash, check_password_hash
 
 
 DATABASE = 'Database/REAL_ASSESSMENT.db'

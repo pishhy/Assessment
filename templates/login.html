@@ -1,12 +1,7 @@
-<!-- tells Flask/Jinja this page fills in the "content" block defined in layout.html -->
 {% extends "layout.html" %}
-<!-- marks the start of the content this page injects into layout.html -->
 {% block content %}
-<!-- outer wrapper that centers the card on the yellow page background -->
 <div class="auth-page">
-    <!-- red card box that holds the whole login form -->
     <div class="auth-card">
-        <!-- page heading shown at the top of the card -->
         <h2 class="auth-title">Hiiiii, lets get your information!</h2>
         <!-- helper text with a link pointing new users to the signup page -->
         <p class="auth-subtext">If you're a first-time user, please <a href="/signup" class="auth-link">Sign Up</a> first!</p>
