@@ -54,7 +54,6 @@ header {
 
   .nav{
   margin: 0;
-  top: 0; /* has no visual effect here since this isn't a positioned element, but reserved in case position gets added later */
   grid-column: 2; /* places this element in the second column of a parent grid layout */
   font-size: 20px;
   list-style-type: none; /* removes the bullet points from this list */
@@ -270,15 +269,6 @@ header {
   box-sizing: border-box;
 }
 
-/* Icon sitting inside the input on the right side */
-.auth-icon{
-  position: absolute; /* pulls the icon out of normal flow so it can float inside the input */
-  right: 14px; /* distance from the right edge of the input */
-  top: 50%; /* starts the icon at the vertical middle of the input... */
-  transform: translateY(-50%); /* ...then shifts it up by half its own height so it's perfectly centered */
-  font-size: 16px;
-  pointer-events: none; /* lets clicks pass through the icon to the input underneath it */
-}
 
 /* Login/Signup submit buttons, styled to match the card's rounded look */
 .form-button, .auth-form-button{

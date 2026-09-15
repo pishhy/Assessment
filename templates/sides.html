@@ -1,15 +1,20 @@
 {% extends "layout.html" %}
 {% block content %}
- 
+<!-- Main container holding all three side columns -->
 <div class="sides-columns">
- 
+
+    <!-- Column 1: Drinks section -->
     <div class="sides-column">
         <h3>Drinks:</h3>
+        <!-- Image display for the drink, defaulting to the first item's photo -->
         <img id="drink-preview" class="side-preview"
              src="{{ '/' ~ drinks[0].photo if drinks else '' }}"
              alt="drink preview">
+        <!-- Dropdown menu that triggers the JS function on selection change -->
         <select id="drink-select" class="sides-dropdown" onchange="updateSidePreview('drink')">
+            <!-- Loop through each drink item passed from Flask -->
             {% for item in drinks %}
+            <!-- Dropdown option storing item name, photo path, and price attributes -->
             <option value="{{ item.sides }}" data-photo="/{{ item.photo }}" data-price="{{ item.price }}">
                 {{ item.sides }}
             </option>
@@ -17,7 +22,8 @@
         </select>
         <button type="button" class="add-now-btn">Add Now</button>
     </div>
- 
+
+    <!-- Column 2: Sauce section -->
     <div class="sides-column">
         <h3>Sauce:</h3>
         <img id="sauce-preview" class="side-preview"
@@ -32,7 +38,8 @@
         </select>
         <button type="button" class="add-now-btn">Add Now</button>
     </div>
- 
+
+    <!-- Column 3: Food sides section -->
     <div class="sides-column">
         <h3>Food sides</h3>
         <img id="food_sides-preview" class="side-preview"
@@ -47,20 +54,28 @@
         </select>
         <button type="button" class="add-now-btn">Add Now</button>
     </div>
- 
+
 </div>
- 
+
+<!-- Bottom row wrapper for the cart link -->
 <div class="checkout-row">
+    <!-- Link directing the user to the cart page with a right arrow symbol -->
     <a href="/cart" class="checkout-link">Checkout &#8594;</a>
 </div>
- 
+
+
 <script>
+    // 1. Define a function that takes 'type' (e.g., 'fries' or 'drinks') as a parameter
     function updateSidePreview(type) {
-        const select = document.getElementById(type + '-select');
-        const img = document.getElementById(type + '-preview');
-        const selected = select.options[select.selectedIndex];
-        img.src = selected.getAttribute('data-photo');
-    }
+    // 2. Find the dropdown <select> element in the HTML by its ID (e.g., 'fries-select')
+    const select = document.getElementById(type + '-select');
+    // 3. Find the preview <img> tag in the HTML by its ID (e.g., 'fries-preview')
+    const img = document.getElementById(type + '-preview');
+    // 4. Get the specific <option> element that the user currently selected in the dropdown
+    const selected = select.options[select.selectedIndex];
+    // 5. Read the 'data-photo' attribute from the selected option and set it as the image's src
+    img.src = selected.getAttribute('data-photo');
+}
 </script>
  
 {% endblock %}

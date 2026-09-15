@@ -7,7 +7,7 @@ DATABASE = 'Database/REAL_ASSESSMENT.db'
 
 
 app = Flask(__name__)
-app.secret_key = 'change-this-to-a-random-secret-key'  # required so Flask can safely sign session cookies and flash messages
+app.secret_key = 'hiiiiiiiiii'
 
 
 def get_db():
