@@ -52,13 +52,14 @@ def sides():
     return render_template("sides.html", drinks=drinks, sauces=sauces, food_sides=food_sides)
 
 
-@app.route('/contact')
-def contact():
-    return render_template('contact.html')
 
 
 @app.route('/login', methods=['GET', 'POST'])  # GET shows the empty login form, POST handles the submitted username/password
 def login():
+
+    if 'user_id' in session:
+        return redirect(url_for('logout'))
+
     if request.method == 'POST':  # only run this block when the form has actually been submitted
         username = request.form['username']  # grabs the value typed into the "username" input
         password = request.form['password']  # grabs the value typed into the "password" input
@@ -79,8 +80,17 @@ def login():
         session['username'] = user['name']  # stores the username too, so it can be shown elsewhere without another query
         flash(f"Welcome back, {user['name']}!")  # queues a friendly success message
         return redirect(url_for('home'))  # sends the now-logged-in user to the homepage
+    return render_template('login.html')
 
-    return render_template('login.html')  # GET request: just show the login form
+@app.route('/logout', methods=['GET', 'POST'])
+def logout():
+    if request.method == 'POST':
+        session.clear()  # Clears session ONLY when the button is clicked
+        flash("You have been logged out.")
+        return redirect(url_for('home'))
+
+    # GET request: shows a confirmation page with the button
+    return render_template('logout.html')
 
 
 @app.route('/cart')

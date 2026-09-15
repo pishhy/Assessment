@@ -284,3 +284,21 @@ header {
   font-size: 16px;
   cursor: pointer;
 }
+
+.logout-cont {
+  display: block;
+  text-align: center; /* centers all text and inline links inside this container */
+  padding-top: 40px;  /* adds breathing room below the header */
+}
+
+.logout-cont p {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.logout-cont a {
+  padding: 12px;
+  color: #B81A1A;
+  font-weight: bold;
+}

@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="logout-cont">
+    {% if session.get('user_id') %}
+    <form action="{{ url_for('logout') }}" method="POST">
+        <button type="submit" class="logout-btn">Log Out</button>
+    </form>
+    {% else %}
+        <p>Welcome, Guest!</p>
+        <a href="{{ url_for('login') }}">Log In</a>
+    {% endif %}
+</div>
+{% endblock %}
