@@ -54,28 +54,22 @@ def sides():
 
 
 
-@app.route('/login', methods=['GET', 'POST'])  # GET shows the empty login form, POST handles the submitted username/password
+@app.route('/login', methods=['GET', 'POST'])
 def login():
-
     if 'user_id' in session:
         return redirect(url_for('logout'))
 
-    if request.method == 'POST':  # only run this block when the form has actually been submitted
-        username = request.form['username']  # grabs the value typed into the "username" input
-        password = request.form['password']  # grabs the value typed into the "password" input
-
+    if request.method == 'POST': 
+        username = request.form['username'] 
+        password = request.form['password'] 
         user_row = query_db("SELECT * FROM user WHERE name = ?", [username], one=True)  # looks up a row in the "user" table whose "name" matches what was typed
-
         if user_row is None:  # no account exists with that username
-            flash("We couldn't find that account — please sign up first.")  # queues a message explaining why they're being redirected
+            flash("We couldn't find that account, please sign up first.")  # queues a message explaining why they're being redirected
             return redirect(url_for('signup'))  # sends them to the signup page to create an account
-
         user = dict(user_row)  # converts the sqlite3.Row into a plain dict so the key lookups below type-check cleanly
-
         if not check_password_hash(user['password'], password):  # compares the typed password against the hashed password stored in the database
             flash("Incorrect password, please try again.")  # queues an error message
             return redirect(url_for('login'))  # reloads the login page so they can retry
-
         session['user_id'] = user['id']  # remembers which user is logged in for future requests
         session['username'] = user['name']  # stores the username too, so it can be shown elsewhere without another query
         flash(f"Welcome back, {user['name']}!")  # queues a friendly success message
@@ -88,41 +82,36 @@ def logout():
         session.clear()  # Clears session ONLY when the button is clicked
         flash("You have been logged out.")
         return redirect(url_for('home'))
-
     # GET request: shows a confirmation page with the button
     return render_template('logout.html')
-
 
 @app.route('/cart')
 def cart():
     return render_template('cart.html')
 
 
-@app.route('/signup', methods=['GET', 'POST'])  # GET shows the empty signup form, POST handles the submitted details
+@app.route('/signup', methods=['GET', 'POST']) 
 def signup():
     if request.method == 'POST':
-        username = request.form['username']  # value typed into the "username" input
-        password = request.form['password']  # value typed into the "password" input
-        address = request.form['address']  # value typed into the "address" input
+        username = request.form['username']  
+        password = request.form['password'] 
+        address = request.form['address']
 
         existing_user = query_db("SELECT id FROM user WHERE name = ?", [username], one=True)  # checks whether that username is already taken
         if existing_user is not None:  # someone already signed up with this username
-            flash("That username is already registered — please log in instead.")  # explains why they're being redirected
+            flash("That username is already registered, please log in instead.")  # explains why they're being redirected
             return redirect(url_for('login'))  # sends them to the login page instead of creating a duplicate
-
+        
         hashed_password = generate_password_hash(password)  # scrambles the password so the raw text is never stored in the database
-
         max_id_row = query_db("SELECT MAX(id) AS max_id FROM user", one=True)  # finds the current highest id (the "user" table's id column doesn't auto-increment on its own); this always returns a row, even on an empty table
         next_id_row = dict(max_id_row) if max_id_row is not None else {}  # converts the row to a dict for clean key lookups, falling back to an empty dict just in case
         next_id = (next_id_row.get('max_id') or 0) + 1  # picks the next id, starting at 1 if the table is empty
-
         db = get_db()  # grabs the current database connection
         db.execute(
             "INSERT INTO user (id, name, address, password) VALUES (?, ?, ?, ?)",  # adds a new row to the "user" table, including the id we just generated
             [next_id, username, address, hashed_password]
         )
         db.commit()  # saves the new row permanently to the database file
-
         flash("Account created! You can now log in.")  # queues a success message
         return redirect(url_for('login'))  # sends the new user to the login page to sign in with their new details
 
