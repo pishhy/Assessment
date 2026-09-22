@@ -118,5 +118,27 @@ def signup():
     return render_template('signup.html')  # GET request: just show the signup form
 
 
+@app.errorhandler(404)
+def page_not_found(error):
+    ''' # Custom error handling for page not found errors'''
+    return render_template('error.html', error=str(error)), 404
+
+
+
+
+@app.errorhandler(500)
+def internal_server_error(error):
+    ''' # Custom error handling for internal server errors'''
+    return render_template('error.html', error=str(error)), 500
+
+
+
+
+@app.errorhandler(Exception)
+def unexpected_error(error):
+    ''' # Custom error handling for other unexpected errors'''
+    return render_template('error.html', error=str(error)), 500
+
+
 if __name__ == "__main__":
     app.run(debug=True)

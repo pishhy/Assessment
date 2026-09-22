@@ -302,3 +302,38 @@ header {
   color: #B81A1A;
   font-weight: bold;
 }
+
+/* ERROR PAGE STYLES */
+body.error-page {
+  font-family: sans-serif;
+  text-align: center;
+  margin: 50px;
+  background-color: #FFD400;
+}
+
+
+.error-page h1 {
+  color: #070707;
+}
+
+
+.error-page p {
+  color: #000000;
+}
+
+
+.error-page .home-button,
+.error-page .reload-button {
+  display: inline-block;
+  background-color: #ff2600;
+  color: #ffffff;
+  padding: 10px 20px;
+  border-radius: 5px;
+  text-decoration: none;
+  margin-top: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+
+
