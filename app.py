@@ -32,6 +32,12 @@ def query_db(query, args=(), one=False):
     return (rv[0] if rv else None) if one else rv
 
 
+def next_id(table): 
+    row = query_db(f"SELECT MAX(id) AS max_id FROM {table}", one=True)
+    row = dict(row) if row is not None else {}
+    return (row.get('max_id') or 0) + 1
+
+
 @app.route('/')
 def home():
     return render_template('home.html')
@@ -84,6 +90,52 @@ def logout():
         return redirect(url_for('home'))
     # GET request: shows a confirmation page with the button
     return render_template('logout.html')
+
+
+@app.route('/add_to_cart/burger/<int:product_id>', methods=['POST'])  # called when "Add Now" is pressed on a burger card
+def add_burger_to_cart(product_id):
+    quantity = int(request.form.get('quantity', 1))  # how many of this burger; defaults to 1 if the form didn't send one
+
+    db = get_db()
+
+    burger_ordered_id = next_id('burger_ordered')  # this row represents "this burger, this quantity"
+    db.execute(
+        "INSERT INTO burger_ordered (id, products_id, burger_quantity) VALUES (?, ?, ?)",
+        [burger_ordered_id, product_id, quantity]
+    )
+
+    order_id = next_id('Customer_order')  # this row is what actually attaches the item to the logged-in customer
+    db.execute(
+        "INSERT INTO Customer_order (id, burger_ordered_id, sides_ordered_id, user_id) VALUES (?, ?, ?, ?)",
+        [order_id, burger_ordered_id, None, session['user_id']]
+    )
+    db.commit()
+
+    flash("Added to your cart!")
+    return redirect(url_for('cart'))  # "Order Now" takes them straight to the cart to see what they just added
+
+
+@app.route('/add_to_cart/side/<int:side_id>', methods=['POST'])  # called when "Add Now" is pressed on a drink/sauce/food side
+def add_side_to_cart(side_id):
+    quantity = int(request.form.get('quantity', 1))
+
+    db = get_db()
+
+    sides_ordered_id = next_id('sides_ordered')
+    db.execute(
+        "INSERT INTO sides_ordered (id, sides_id, burger_quantity) VALUES (?, ?, ?)",
+        [sides_ordered_id, side_id, quantity]
+    )
+
+    order_id = next_id('Customer_order')
+    db.execute(
+        "INSERT INTO Customer_order (id, burger_ordered_id, sides_ordered_id, user_id) VALUES (?, ?, ?, ?)",
+        [order_id, None, sides_ordered_id, session['user_id']]
+    )
+    db.commit()
+
+    flash("Added to your cart!")
+    return redirect(url_for('cart'))
 
 @app.route('/cart')
 def cart():
