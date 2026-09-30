@@ -24,7 +24,17 @@
 </div>
 
 <div class="cart-total">
+    <p>{{ order_items|length }} item{{ 's' if order_items|length != 1 else '' }}</p>
     <p>Total: ${{ "%.2f"|format(total) }}</p>
+</div>
+
+<!-- clears the whole cart and flashes a confirmation when pressed -->
+<div class="submit-order-row">
+    <form action="{{ url_for('submit_order') }}" method="post">
+        <button type="submit" class="submit-order-btn">
+            Submit Order
+        </button>
+    </form>
 </div>
 {% else %}
 <p class="cart-empty">Your cart is empty. Head to the <a href="{{ url_for('menu') }}">menu</a> to add something.</p>

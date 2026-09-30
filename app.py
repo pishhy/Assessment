@@ -192,6 +192,19 @@ def cart():
     return render_template('cart.html', order_items=order_items, total=total)
 
 
+@app.route('/submit_order', methods=['POST'])  # called by the "Submit Order" button on the cart page
+@login_required
+def submit_order():
+    db = get_db()
+    # removes every Customer_order row for this user — since the cart page is built entirely
+    # from Customer_order, this is what actually empties the cart
+    db.execute("DELETE FROM Customer_order WHERE user_id = ?", [session['user_id']])
+    db.commit()
+
+    flash("Order submitted!")
+    return redirect(url_for('cart'))  # sends them back to the now-empty cart
+
+
 @app.route('/signup', methods=['GET', 'POST']) 
 def signup():
     if request.method == 'POST':
