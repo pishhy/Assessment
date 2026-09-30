@@ -1,5 +1,6 @@
 from flask import Flask, g, render_template, request, redirect, url_for, flash, session  # request reads form data, redirect/url_for send the browser to another route, flash queues a one-time message, session stores the logged-in user's id
 import sqlite3  # lets Python talk to the SQLite database file
+from functools import wraps  # keeps a wrapped route's name/docstring intact, needed for the login_required decorator below
 from werkzeug.security import generate_password_hash, check_password_hash  # turns a plain password into a scrambled hash, and checks a plain password against a stored hash
 
 
@@ -36,6 +37,16 @@ def next_id(table):  # these tables don't auto-increment, so work out the next i
     row = query_db(f"SELECT MAX(id) AS max_id FROM {table}", one=True)
     row = dict(row) if row is not None else {}
     return (row.get('max_id') or 0) + 1
+
+
+def login_required(view):  # put @login_required above any route that needs session['user_id'] to exist
+    @wraps(view)
+    def wrapped_view(*args, **kwargs):
+        if 'user_id' not in session:  # nobody logged in this session
+            flash("Please log in first.")
+            return redirect(url_for('login'))  # send them to login instead of crashing on session['user_id']
+        return view(*args, **kwargs)
+    return wrapped_view
 
 
 @app.route('/')
@@ -93,6 +104,7 @@ def logout():
 
 
 @app.route('/add_to_cart/burger/<int:product_id>', methods=['POST'])  # called when "Add Now" is pressed on a burger card
+@login_required
 def add_burger_to_cart(product_id):
     quantity = int(request.form.get('quantity', 1))  # how many of this burger; defaults to 1 if the form didn't send one
 
@@ -117,6 +129,7 @@ def add_burger_to_cart(product_id):
 
 
 @app.route('/add_to_cart/side/<int:side_id>', methods=['POST'])  # called when "Add Now" is pressed on a drink/sauce/food side
+@login_required
 def add_side_to_cart(side_id):
     quantity = int(request.form.get('quantity', 1))  # how many of this side; defaults to 1 if the form didn't send one
 
@@ -141,6 +154,7 @@ def add_side_to_cart(side_id):
 
 
 @app.route('/cart')
+@login_required
 def cart():
     # pulls every order line for the logged-in user, joining across to the actual burger/side details;
     # LEFT JOINs are used because a given Customer_order row is either a burger line or a side line, never both,
