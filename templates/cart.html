@@ -1,1 +1,33 @@
 {% extends "layout.html" %}
+{% block content %}
+
+<h1 class="cart-title">Your Cart</h1>
+
+{% if order_items %}
+<!-- each order line renders as its own solid red block, stacked with yellow gaps between them -->
+<div class="cart-items">
+    {% for line in order_items %}
+    <div class="cart-line">
+        {% if line.burger_name %}
+        <!-- this line is a burger -->
+        <img src="/{{ line.burger_photo }}" alt="{{ line.burger_name }}" class="cart-line-photo">
+        <p class="cart-line-name">{{ line.burger_name }} &times; {{ line.burger_quantity }}</p>
+        <p class="cart-line-price">${{ "%.2f"|format(line.burger_price|replace("$", "")|float * line.burger_quantity) }}</p>
+        {% elif line.side_name %}
+        <!-- this line is a side/drink/sauce -->
+        <img src="/{{ line.side_photo }}" alt="{{ line.side_name }}" class="cart-line-photo">
+        <p class="cart-line-name">{{ line.side_name }} &times; {{ line.side_quantity }}</p>
+        <p class="cart-line-price">${{ "%.2f"|format(line.side_price * line.side_quantity) }}</p>
+        {% endif %}
+    </div>
+    {% endfor %}
+</div>
+
+<div class="cart-total">
+    <p>Total: ${{ "%.2f"|format(total) }}</p>
+</div>
+{% else %}
+<p class="cart-empty">Your cart is empty. Head to the <a href="{{ url_for('menu') }}">menu</a> to add something.</p>
+{% endif %}
+
+{% endblock %}
