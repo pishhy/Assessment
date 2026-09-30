@@ -12,7 +12,9 @@
         <p>{{ item.ingredients }}</p>
         <h3>Condiments: </h3>
         <p>{{ item.condiments }}</p>
-        <button type="button" class="add-now-btn">Add Now</button>
+        <form action="{{ url_for('add_burger_to_cart', product_id=item.id) }}" method="post">
+            <button type="submit" class="add-now-btn">Add Now</button>
+        </form>
     </div>
     {% endfor %}
 </div>

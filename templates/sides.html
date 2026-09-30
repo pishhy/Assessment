@@ -14,13 +14,16 @@
         <select id="drink-select" class="sides-dropdown" onchange="updateSidePreview('drink')">
             <!-- Loop through each drink item passed from Flask -->
             {% for item in drinks %}
-            <!-- Dropdown option storing item name, photo path, and price attributes -->
-            <option value="{{ item.sides }}" data-photo="/{{ item.photo }}" data-price="{{ item.price }}">
+            <!-- Dropdown option storing item id, name, photo path, and price attributes -->
+            <option value="{{ item.sides }}" data-id="{{ item.id }}" data-photo="/{{ item.photo }}" data-price="{{ item.price }}">
                 {{ item.sides }}
             </option>
             {% endfor %}
         </select>
-        <button type="button" class="add-now-btn">Add Now</button>
+        <!-- posting this form creates the Customer_order + sides_ordered rows for whichever drink is currently selected above; the "0" gets swapped for the real id by prepareSideForm() just before submit -->
+        <form id="drink-form" action="{{ url_for('add_side_to_cart', side_id=0) }}" method="post" onsubmit="return prepareSideForm('drink')">
+            <button type="submit" class="add-now-btn">Add Now</button>
+        </form>
     </div>
 
     <!-- Column 2: Sauce section -->
@@ -31,12 +34,14 @@
              alt="sauce preview">
         <select id="sauce-select" class="sides-dropdown" onchange="updateSidePreview('sauce')">
             {% for item in sauces %}
-            <option value="{{ item.sides }}" data-photo="/{{ item.photo }}" data-price="{{ item.price }}">
+            <option value="{{ item.sides }}" data-id="{{ item.id }}" data-photo="/{{ item.photo }}" data-price="{{ item.price }}">
                 {{ item.sides }}
             </option>
             {% endfor %}
         </select>
-        <button type="button" class="add-now-btn">Add Now</button>
+        <form id="sauce-form" action="{{ url_for('add_side_to_cart', side_id=0) }}" method="post" onsubmit="return prepareSideForm('sauce')">
+            <button type="submit" class="add-now-btn">Add Now</button>
+        </form>
     </div>
 
     <!-- Column 3: Food sides section -->
@@ -47,12 +52,14 @@
              alt="food side preview">
         <select id="food_sides-select" class="sides-dropdown" onchange="updateSidePreview('food_sides')">
             {% for item in food_sides %}
-            <option value="{{ item.sides }}" data-photo="/{{ item.photo }}" data-price="{{ item.price }}">
+            <option value="{{ item.sides }}" data-id="{{ item.id }}" data-photo="/{{ item.photo }}" data-price="{{ item.price }}">
                 {{ item.sides }}
             </option>
             {% endfor %}
         </select>
-        <button type="button" class="add-now-btn">Add Now</button>
+        <form id="food_sides-form" action="{{ url_for('add_side_to_cart', side_id=0) }}" method="post" onsubmit="return prepareSideForm('food_sides')">
+            <button type="submit" class="add-now-btn">Add Now</button>
+        </form>
     </div>
 
 </div>
@@ -76,6 +83,23 @@
     // 5. Read the 'data-photo' attribute from the selected option and set it as the image's src
     img.src = selected.getAttribute('data-photo');
 }
+
+// Runs right before a sides "Add Now" form submits.
+// The form's action ends in ".../side/0" as a placeholder — this swaps the 0
+// for the real id of whichever option is currently selected in the dropdown.
+function prepareSideForm(type) {
+    const select = document.getElementById(type + '-select');
+    const form = document.getElementById(type + '-form');
+    const selected = select.options[select.selectedIndex];
+
+    if (!selected) {
+        return false; // nothing selected (e.g. empty dropdown) — don't submit
+    }
+
+    const id = selected.getAttribute('data-id');
+    form.action = form.action.replace(/\/0$/, '/' + id); // replace the trailing "/0" with the real id
+    return true; // let the form submit normally
+}   
 </script>
  
 {% endblock %}
