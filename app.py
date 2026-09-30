@@ -3,26 +3,26 @@ import sqlite3  # lets Python talk to the SQLite database file
 from werkzeug.security import generate_password_hash, check_password_hash  # turns a plain password into a scrambled hash, and checks a plain password against a stored hash
 
 
-DATABASE = 'Database/REAL_ASSESSMENT.db'
+DATABASE = 'Database/REAL_ASSESSMENT.db'  # path to the SQLite database file that get_db() connects to
 
 
-app = Flask(__name__)
-app.secret_key = 'hiiiiiiiiii'
+app = Flask(__name__)  # creates the actual Flask application object that all the @app.route(...) functions attach to
+app.secret_key = 'hiiiiiiiiii'  # needed so Flask can sign session cookies and flash messages; without this, session/flash won't work
 
 
 def get_db():
-    db = getattr(g, '_database', None)
-    if db is None:
-        db = g._database = sqlite3.connect(DATABASE)
-        db.row_factory = sqlite3.Row
+    db = getattr(g, '_database', None)  # checks if a connection was already opened during this request
+    if db is None:  # no connection yet this request
+        db = g._database = sqlite3.connect(DATABASE)  # open one, and store it on "g" so the rest of this request can reuse it
+        db.row_factory = sqlite3.Row  # lets query results be read like dictionaries (row['column']) instead of plain tuples
     return db
 
 
-@app.teardown_appcontext
+@app.teardown_appcontext  # Flask calls this automatically at the end of every request, success or failure
 def close_connection(exception):
     db = getattr(g, '_database', None)
     if db is not None:
-        db.close()
+        db.close()  # closes the connection so it doesn't stay open after the request finishes
 
 
 def query_db(query, args=(), one=False):
@@ -32,7 +32,7 @@ def query_db(query, args=(), one=False):
     return (rv[0] if rv else None) if one else rv
 
 
-def next_id(table): 
+def next_id(table):  # these tables don't auto-increment, so work out the next id ourselves (same pattern the signup route uses for "user")
     row = query_db(f"SELECT MAX(id) AS max_id FROM {table}", one=True)
     row = dict(row) if row is not None else {}
     return (row.get('max_id') or 0) + 1
@@ -40,21 +40,21 @@ def next_id(table):
 
 @app.route('/')
 def home():
-    return render_template('home.html')
+    return render_template('home.html')  # just shows the homepage, no data needed
 
 
 @app.route('/menu')
 def menu():
-    sql = "SELECT burgers, price, ingredients, condiments, photo FROM products WHERE burgers IS NOT NULL AND burgers != ''"
+    sql = "SELECT id, burgers, price, ingredients, condiments, photo FROM products WHERE burgers IS NOT NULL AND burgers != ''"  # only rows that actually have a burger name, so blank/placeholder rows don't show up
     results = query_db(sql)
     return render_template("menus.html", results=results)
 
 
 @app.route('/sides')
 def sides():
-    drinks = query_db("SELECT sides, price, photo FROM sides WHERE description='drink'")
-    sauces = query_db("SELECT sides, price, photo FROM sides WHERE description='sauce'")
-    food_sides = query_db("SELECT sides, price, photo FROM sides WHERE description='side'")
+    drinks = query_db("SELECT id, sides, price, photo FROM sides WHERE description='drink'")  # only rows tagged as a drink
+    sauces = query_db("SELECT id, sides, price, photo FROM sides WHERE description='sauce'")  # only rows tagged as a sauce
+    food_sides = query_db("SELECT id, sides, price, photo FROM sides WHERE description='side'")  # only rows tagged as a food side
     return render_template("sides.html", drinks=drinks, sauces=sauces, food_sides=food_sides)
 
 
@@ -62,12 +62,12 @@ def sides():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    if 'user_id' in session:
+    if 'user_id' in session:  # already logged in
         return redirect(url_for('logout'))
 
     if request.method == 'POST': 
-        username = request.form['username'] 
-        password = request.form['password'] 
+        username = request.form['username']  # value typed into the "username" input
+        password = request.form['password']  # value typed into the "password" input
         user_row = query_db("SELECT * FROM user WHERE name = ?", [username], one=True)  # looks up a row in the "user" table whose "name" matches what was typed
         if user_row is None:  # no account exists with that username
             flash("We couldn't find that account, please sign up first.")  # queues a message explaining why they're being redirected
@@ -107,47 +107,83 @@ def add_burger_to_cart(product_id):
     order_id = next_id('Customer_order')  # this row is what actually attaches the item to the logged-in customer
     db.execute(
         "INSERT INTO Customer_order (id, burger_ordered_id, sides_ordered_id, user_id) VALUES (?, ?, ?, ?)",
-        [order_id, burger_ordered_id, None, session['user_id']]
+        [order_id, burger_ordered_id, None, session['user_id']]  # sides_ordered_id is None here since this insert is only for a burger
     )
     db.commit()
 
     flash("Added to your cart!")
-    return redirect(url_for('cart'))  # "Order Now" takes them straight to the cart to see what they just added
+    # go back to whichever page the "Add Now" button was pressed on, instead of jumping to /cart
+    return redirect(request.referrer or url_for('menu'))
 
 
 @app.route('/add_to_cart/side/<int:side_id>', methods=['POST'])  # called when "Add Now" is pressed on a drink/sauce/food side
 def add_side_to_cart(side_id):
-    quantity = int(request.form.get('quantity', 1))
+    quantity = int(request.form.get('quantity', 1))  # how many of this side; defaults to 1 if the form didn't send one
 
     db = get_db()
 
-    sides_ordered_id = next_id('sides_ordered')
+    sides_ordered_id = next_id('sides_ordered')  # this row represents "this side, this quantity"
     db.execute(
         "INSERT INTO sides_ordered (id, sides_id, burger_quantity) VALUES (?, ?, ?)",
         [sides_ordered_id, side_id, quantity]
     )
 
-    order_id = next_id('Customer_order')
+    order_id = next_id('Customer_order')  # this row is what actually attaches the item to the logged-in customer
     db.execute(
         "INSERT INTO Customer_order (id, burger_ordered_id, sides_ordered_id, user_id) VALUES (?, ?, ?, ?)",
-        [order_id, None, sides_ordered_id, session['user_id']]
+        [order_id, None, sides_ordered_id, session['user_id']]  # burger_ordered_id is None here since this insert is only for a side
     )
     db.commit()
 
     flash("Added to your cart!")
-    return redirect(url_for('cart'))
+    # go back to whichever page the "Add Now" button was pressed on, instead of jumping to /cart
+    return redirect(request.referrer or url_for('sides'))
+
 
 @app.route('/cart')
 def cart():
-    return render_template('cart.html')
+    # pulls every order line for the logged-in user, joining across to the actual burger/side details;
+    # LEFT JOINs are used because a given Customer_order row is either a burger line or a side line, never both,
+    # so whichever one doesn't apply will just come back as NULL in the results
+    sql = """
+        SELECT
+            Customer_order.id AS order_id,
+            products.burgers AS burger_name,
+            products.price AS burger_price,
+            products.photo AS burger_photo,
+            burger_ordered.burger_quantity AS burger_quantity,
+            sides.sides AS side_name,
+            sides.price AS side_price,
+            sides.photo AS side_photo,
+            sides_ordered.burger_quantity AS side_quantity
+        FROM Customer_order
+        LEFT JOIN burger_ordered ON Customer_order.burger_ordered_id = burger_ordered.id
+        LEFT JOIN products ON burger_ordered.products_id = products.id
+        LEFT JOIN sides_ordered ON Customer_order.sides_ordered_id = sides_ordered.id
+        LEFT JOIN sides ON sides_ordered.sides_id = sides.id
+        WHERE Customer_order.user_id = ?
+        ORDER BY Customer_order.id
+    """
+    order_items = query_db(sql, [session['user_id']]) or []  # "or []" keeps this a list even if query_db ever returned None
+
+    total = 0  # running total of the whole order, in dollars
+    for row in order_items:
+        if row['burger_price'] is not None:  # this row is a burger line
+            # burger prices are stored as text like "$6.99" in this database, so strip the $ before doing maths
+            burger_price = float(str(row['burger_price']).replace('$', ''))
+            total += burger_price * row['burger_quantity']
+        if row['side_price'] is not None:  # this row is a side line
+            total += row['side_price'] * row['side_quantity']
+
+    return render_template('cart.html', order_items=order_items, total=total)
 
 
 @app.route('/signup', methods=['GET', 'POST']) 
 def signup():
     if request.method == 'POST':
-        username = request.form['username']  
-        password = request.form['password'] 
-        address = request.form['address']
+        username = request.form['username']  # value typed into the "username" input
+        password = request.form['password']  # value typed into the "password" input
+        address = request.form['address']  # value typed into the "address" input
 
         existing_user = query_db("SELECT id FROM user WHERE name = ?", [username], one=True)  # checks whether that username is already taken
         if existing_user is not None:  # someone already signed up with this username
@@ -192,5 +228,5 @@ def unexpected_error(error):
     return render_template('error.html', error=str(error)), 500
 
 
-if __name__ == "__main__":
-    app.run(debug=True)
+if __name__ == "__main__":  # only runs when this file is executed directly (e.g. "python app.py"), not when it's imported elsewhere
+    app.run(debug=True)  # debug=True enables auto-reload on code changes and shows detailed error pages while developing
