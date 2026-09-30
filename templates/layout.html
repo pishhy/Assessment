@@ -3,29 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- main stylesheet for the whole site -->
     <link rel="stylesheet" href="../static/CSS/style.css">
+    <!-- preconnect hints so the browser starts the connection to Google Fonts early, before it actually needs the font file -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- loads the "Inika" font in regular (400) and bold (700) weights -->
     <link href="https://fonts.googleapis.com/css2?family=Inika:wght@400;700&display=swap" rel="stylesheet">
     <title>EVAN BURGERS</title>
 </head>
 
 
 <body>
+    <!-- site-wide header, shown on every page that extends this layout -->
     <header>
         <div class="header">
 
-
+            <!-- logo on the left, links back to the homepage -->
             <div class="head">
                 <a href="/"><img src="static/images/burger-logo.png" alt="Burger logo" >
                     </a>
             </div>
 
+            <!-- cart icon, links to the /cart page -->
             <div class="cart">
                 <a href="/cart"><img src="static/images/cartlogo.png" alt="Cart">
                     </a>
             </div>
 
+            <!-- login icon, links to the /login page -->
             <div>
                 <div class="log">
                     <a href="/login"><img src="static/images/login-logo.png" alt="login logo">
@@ -33,17 +39,24 @@
                 </div>
             </div>
 
-
-
         </div>
     </header>
 
+    <!-- shows any message queued with flash() in app.py (login errors, "added to cart", etc) — without this block, flash() messages are silently thrown away -->
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul class="flashes">
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    {% endwith %}
 
+    <!-- this is where each page's own content gets inserted; every child template that uses the "extends" pattern fills this block in -->
     <main>
         {% block content %}{% endblock %}
     </main>
-
-
     <footer>
         {% include "footer.html" %}
     </footer>

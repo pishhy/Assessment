@@ -304,6 +304,31 @@ header {
   font-weight: bold;
 }
 
+/* FLASH MESSAGES (shown at the top of the page for things like login errors or "Added to your cart!") */
+.flashes{
+  list-style: none; /* removes the default bullet points */
+  list-style-type: none; /* belt-and-braces in case something else targets list-style-type specifically */
+  margin: 0;
+  padding: 15px 30px;
+  max-width: 900px;
+  margin-left: auto; /* centers the block, same width/centering as the cart page content */
+  margin-right: auto;
+}
+
+.flashes li{
+  list-style: none; /* some browsers need this set on the li itself, not just the ul, to fully remove the marker */
+  padding-left: 0; /* removes the space that was reserved for the bullet marker */
+  background-color: #B81A1A;
+  color: #FFD400;
+  font-weight: bold;
+  text-align: center; /* centers the message text inside its red box */
+  padding: 12px 20px;
+  margin-top: 10px;
+  border-radius: 6px;
+  transition: opacity 0.5s ease; /* smooth fade when the auto-hide script below removes it */
+}
+
+
 /* CART PAGE STYLES */
 
 .cart-title{
