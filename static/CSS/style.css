@@ -400,6 +400,22 @@ header {
   font-weight: bold;
 }
 
+.remove-form{
+  margin-left: 20px; /* separates it from the price, which sits right before it in the same flex row */
+  flex-shrink: 0; /* stops it from getting squashed if the item name is long */
+}
+
+.remove-btn{
+  background-color: transparent;
+  border: 2px solid #FFD400;
+  color: #FFD400;
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: bold;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
 .cart-empty{
   text-align: center;
   font-size: 20px;

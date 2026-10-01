@@ -192,6 +192,22 @@ def cart():
     return render_template('cart.html', order_items=order_items, total=total)
 
 
+@app.route('/remove_from_cart/<int:order_id>', methods=['POST'])  # called by the "Remove" button on a single cart item
+@login_required
+def remove_from_cart(order_id):
+    db = get_db()
+    # the "AND user_id = ?" check matters here: without it, anyone could remove items from
+    # someone else's cart just by guessing/changing the order_id in the request
+    db.execute(
+        "DELETE FROM Customer_order WHERE id = ? AND user_id = ?",
+        [order_id, session['user_id']]
+    )
+    db.commit()
+
+    flash("Item removed from your cart.")
+    return redirect(url_for('cart'))
+
+
 @app.route('/submit_order', methods=['POST'])  # called by the "Submit Order" button on the cart page
 @login_required
 def submit_order():

@@ -19,6 +19,10 @@
         <p class="cart-line-name">{{ line.side_name }} &times; {{ line.side_quantity }}</p>
         <p class="cart-line-price">${{ "%.2f"|format(line.side_price * line.side_quantity) }}</p>
         {% endif %}
+        <!-- removes just this one line from the cart -->
+        <form action="{{ url_for('remove_from_cart', order_id=line.order_id) }}" method="post" class="remove-form">
+            <button type="submit" class="remove-btn">Remove</button>
+        </form>
     </div>
     {% endfor %}
 </div>
