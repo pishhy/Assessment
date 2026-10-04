@@ -4,7 +4,8 @@ from functools import wraps  # keeps a wrapped route's name/docstring intact, ne
 from werkzeug.security import generate_password_hash, check_password_hash  # turns a plain password into a scrambled hash, and checks a plain password against a stored hash
 
 
-DATABASE = 'Database/REAL_ASSESSMENT.db'  # path to the SQLite database file that get_db() connects to
+
+DATABASE = 'Database/REAL_ASSESSMENT.db' # path to the SQLite database file that get_db() connects to
 
 
 app = Flask(__name__)  # creates the actual Flask application object that all the @app.route(...) functions attach to
@@ -53,14 +54,14 @@ def login_required(view):  # put @login_required above any route that needs sess
 def home():
     return render_template('home.html')  # just shows the homepage, no data needed
 
-
+#route to show the menu page, which includes all the burgers
 @app.route('/menu')
 def menu():
     sql = "SELECT id, burgers, price, ingredients, condiments, photo FROM products WHERE burgers IS NOT NULL AND burgers != ''"  # only rows that actually have a burger name, so blank/placeholder rows don't show up
     results = query_db(sql)
     return render_template("menus.html", results=results)
 
-
+#route to show the sides page, which includes drinks, sauces, and food sides
 @app.route('/sides')
 def sides():
     drinks = query_db("SELECT id, sides, price, photo FROM sides WHERE description='drink'")  # only rows tagged as a drink
@@ -70,10 +71,10 @@ def sides():
 
 
 
-
+#login route: checks the username and password against the database, and sets session['user_id'] if successful
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    if 'user_id' in session:  # already logged in
+    if 'user_id' in session:
         return redirect(url_for('logout'))
 
     if request.method == 'POST': 
@@ -82,7 +83,7 @@ def login():
         user_row = query_db("SELECT * FROM user WHERE name = ?", [username], one=True)  # looks up a row in the "user" table whose "name" matches what was typed
         if user_row is None:  # no account exists with that username
             flash("We couldn't find that account, please sign up first.")  # queues a message explaining why they're being redirected
-            return redirect(url_for('signup'))  # sends them to the signup page to create an account
+            return redirect(url_for('signup'))
         user = dict(user_row)  # converts the sqlite3.Row into a plain dict so the key lookups below type-check cleanly
         if not check_password_hash(user['password'], password):  # compares the typed password against the hashed password stored in the database
             flash("Incorrect password, please try again.")  # queues an error message
@@ -90,9 +91,10 @@ def login():
         session['user_id'] = user['id']  # remembers which user is logged in for future requests
         session['username'] = user['name']  # stores the username too, so it can be shown elsewhere without another query
         flash(f"Welcome back, {user['name']}!")  # queues a friendly success message
-        return redirect(url_for('home'))  # sends the now-logged-in user to the homepage
+        return redirect(url_for('home')) 
     return render_template('login.html')
 
+#route to log out the current user, clearing the session
 @app.route('/logout', methods=['GET', 'POST'])
 def logout():
     if request.method == 'POST':
@@ -103,6 +105,7 @@ def logout():
     return render_template('logout.html')
 
 
+# route to add a burger to the cart
 @app.route('/add_to_cart/burger/<int:product_id>', methods=['POST'])  # called when "Add Now" is pressed on a burger card
 @login_required
 def add_burger_to_cart(product_id):
@@ -127,7 +130,7 @@ def add_burger_to_cart(product_id):
     # go back to whichever page the "Add Now" button was pressed on, instead of jumping to /cart
     return redirect(request.referrer or url_for('menu'))
 
-
+# route to add a side (drink, sauce, or food side) to the cart
 @app.route('/add_to_cart/side/<int:side_id>', methods=['POST'])  # called when "Add Now" is pressed on a drink/sauce/food side
 @login_required
 def add_side_to_cart(side_id):
@@ -152,13 +155,10 @@ def add_side_to_cart(side_id):
     # go back to whichever page the "Add Now" button was pressed on, instead of jumping to /cart
     return redirect(request.referrer or url_for('sides'))
 
-
+#cart route: shows the logged-in user's current cart contents, with a running total of the order
 @app.route('/cart')
 @login_required
 def cart():
-    # pulls every order line for the logged-in user, joining across to the actual burger/side details;
-    # LEFT JOINs are used because a given Customer_order row is either a burger line or a side line, never both,
-    # so whichever one doesn't apply will just come back as NULL in the results
     sql = """
         SELECT
             Customer_order.id AS order_id,
@@ -192,6 +192,8 @@ def cart():
     return render_template('cart.html', order_items=order_items, total=total)
 
 
+
+# route to remove a single item from the cart
 @app.route('/remove_from_cart/<int:order_id>', methods=['POST'])  # called by the "Remove" button on a single cart item
 @login_required
 def remove_from_cart(order_id):
@@ -207,7 +209,7 @@ def remove_from_cart(order_id):
     flash("Item removed from your cart.")
     return redirect(url_for('cart'))
 
-
+#adding a route to submit the order and clear the cart
 @app.route('/submit_order', methods=['POST'])  # called by the "Submit Order" button on the cart page
 @login_required
 def submit_order():
@@ -221,6 +223,7 @@ def submit_order():
     return redirect(url_for('cart'))  # sends them back to the now-empty cart
 
 
+#signup route: creates a new user account in the database
 @app.route('/signup', methods=['GET', 'POST']) 
 def signup():
     if request.method == 'POST':
@@ -248,7 +251,7 @@ def signup():
 
     return render_template('signup.html')  # GET request: just show the signup form
 
-
+#handles 404 page not found errors
 @app.errorhandler(404)
 def page_not_found(error):
     ''' # Custom error handling for page not found errors'''
@@ -256,7 +259,7 @@ def page_not_found(error):
 
 
 
-
+#handles 500 internal server errors
 @app.errorhandler(500)
 def internal_server_error(error):
     ''' # Custom error handling for internal server errors'''
@@ -264,7 +267,7 @@ def internal_server_error(error):
 
 
 
-
+#handles other unexpected errors
 @app.errorhandler(Exception)
 def unexpected_error(error):
     ''' # Custom error handling for other unexpected errors'''

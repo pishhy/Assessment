@@ -1,13 +1,16 @@
-{% extends "layout.html" %}
-{% block content %}
+{% extends "layout.html" %} 
+{% block content %} 
 <div class="logout-cont">
-    {% if session.get('user_id') %}
-    <form action="{{ url_for('logout') }}" method="POST">
-        <button type="submit" class="logout-btn">Log Out</button>
+    <!-- only show the Log Out button if someone's actually logged in this session -->
+    {% if session.get('user_id') %}  <!-- True if a user_id is stored in the session, meaning they're logged in -->
+    <!-- posting this form is what actually clears the session, in the /logout route -->
+    <form action="{{ url_for('logout') }}" method="POST">  <!-- submits to the /logout route when the button is pressed -->
+        <button type="submit" class="logout-btn">Log Out</button>  <!-- the clickable button -->
     </form>
-    {% else %}
-        <p>Welcome, Guest!</p>
-        <a href="{{ url_for('login') }}">Log In</a>
-    {% endif %}
+    {% else %}  <!-- runs if nobody is logged in -->
+        <!-- nobody logged in, so show a guest message and a link to log in instead -->
+        <p>Welcome, Guest!</p>  <!-- static greeting for a logged-out visitor -->
+        <a href="{{ url_for('login') }}">Log In</a>  <!-- link to the login page -->
+    {% endif %} 
 </div>
-{% endblock %}
+{% endblock %} 

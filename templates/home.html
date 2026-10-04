@@ -1,39 +1,42 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html> 
+<html lang="en"> 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../static/CSS/style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inika:wght@400;700&display=swap" rel="stylesheet">
-    <title>EVAN  BURGERS</title>
+    <meta charset="UTF-8">  <!-- sets the character encoding so special characters display correctly -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  <!-- tells mobile browsers to match the page width to the device's actual screen width -->
+    <link rel="stylesheet" href="../static/CSS/style.css">  <!-- loads the site's main stylesheet -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">  <!-- starts connecting to Google Fonts early -->
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>  <!-- same early-connect hint, for the actual font file host -->
+    <link href="https://fonts.googleapis.com/css2?family=Inika:wght@400;700&display=swap" rel="stylesheet">  <!-- loads the "Inika" font in regular and bold weights -->
+    <title>EVAN  BURGERS</title>  <!-- sets this page's browser tab title -->
 </head>
 <body>
     <header>
-        {% include "layout.html" %}
+        {% include "layout.html" %}  <!-- inserts layout.html's full content here, including its own html/head/body tags -->
     </header>
 
 
             
     <main>
-            <ul class="nav">
+            <!-- simple nav bar linking to the two main pages -->
+            <ul class="nav">  <!-- list-based nav, styled as a flex row by .nav -->
 
-                <li><a href="/menu" style="background-color: black; color: #C78D22; padding: 10%; border-radius: 20%;">Menu</a></li>
+                <li><a href="/menu" style="background-color: black; color: #C78D22; padding: 10%; border-radius: 20%;">Menu</a></li>  <!-- links to the /menu route, styled inline with its own colours/padding -->
 
-                <li><a href="/cart" style="background-color: black; color: #C78D22; padding: 10%; border-radius: 20%;">Cart</a></li>
+                <li><a href="/cart" style="background-color: black; color: #C78D22; padding: 10%; border-radius: 20%;">Cart</a></li>  <!-- links to the /cart route; same inline styling pattern as the Menu link above -->
 
             </ul>
 
-        <div class="logos">
-            <div id="Logo1">
-                <img src="/static/images/EvanBurgers.png" alt="EvanBurgers logo">
+        <!-- brand logo/hero image shown on the homepage -->
+        <div class="logos">  <!-- outer wrapper, targeted by the CSS grid for positioning -->
+            <div id="Logo1">  <!-- inner wrapper; no CSS currently targets this id specifically -->
+                <img src="/static/images/EvanBurgers.png" alt="EvanBurgers logo">  <!-- the actual hero image, with alt text for accessibility -->
             </div>
         </div>
+        <!-- "About us" blurb -->
         <p>
-            <strong>About us</strong>  
-            <br></br>
-            <br>Welcome to our small business! We're passionate about simplicity and quality, starting with just three carefully selected ingredients. Our goal is to bring you fresh, delicious products made with love and minimalism.</br>  
+            <strong>About us</strong>  <!-- bolded heading text within the paragraph -->
+            <br></br>  <!-- extra line break; the closing </br> isn't valid HTML and has no effect -->
+            <br>Welcome to our small business! We're passionate about simplicity and quality, starting with just three carefully selected ingredients. Our goal is to bring you fresh, delicious products made with love and minimalism.</br>  <!-- first About Us paragraph -->
             <br>We believe that true flavor comes from natural, wholesome ingredients, and that less is more. Our commitment is to provide you with products that are not only tasty but also healthy and honest.</br>  
             <br>Every item we create is crafted with care and attention to detail, ensuring the highest standards. We love sharing our passion with you and hope our products bring joy to your daily life.</br>  
             <br>Stay tuned as we grow and expand, always keeping your satisfaction at the heart of everything we do! Thank you for supporting our journey and trusting us to be part of your lifestyle.</br> 

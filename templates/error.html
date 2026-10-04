@@ -2,15 +2,9 @@
     <title>Error</title>
     <link rel="stylesheet" href="../static/CSS/style.css">
 </head>
-<body class="error-page">
+<!-- this page is rendered by the 404/500/Exception error handlers in app.py, with "error" passed in as the message to show -->
+<body class="error-page"></body>
     <h1>Error</h1>
-    <p>{{ error }}</p>
-    <a href="{{ url_for('home') }}" class="home-button">Back to Home</a>
+    <p>{{ error }}</p>  <!-- prints whatever error message app.py passed in -->
+    <a href="{{ url_for('home') }}" class="home-button">Back to Home</a>  <!-- link back to the homepage, built from the home() route's URL -->
 </body>
-
-
-
-
-
-
-

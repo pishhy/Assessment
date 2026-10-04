@@ -1,26 +1,27 @@
-{% extends "layout.html" %}
+{% extends "layout.html" %} 
 {% block content %}
 
-
-<div class="burger-grid">
-    {% for item in results %}
+<div class="burger-grid"> 
+    {% for item in results %}  <!-- loops over each burger row returned from the database -->
     <div class="burger-card">
-        <img src="/{{ item.photo }}" alt="{{ item.burgers }}">
-        <h2>{{ item.burgers }}</h2>
-        <p>{{ item.price }}</p>
-        <h3>Ingredients: </h3>
+        <img src="/{{ item.photo }}" alt="{{ item.burgers }}">  <!-- product photo, with alt text set to the burger's name -->
+        <h2>{{ item.burgers }}</h2> 
+        <p>{{ item.price }}</p>  
+        <h3>Ingredients: </h3>  
         <p>{{ item.ingredients }}</p>
-        <h3>Condiments: </h3>
-        <p>{{ item.condiments }}</p>
-        <form action="{{ url_for('add_burger_to_cart', product_id=item.id) }}" method="post">
-            <button type="submit" class="add-now-btn">Add Now</button>
+        <h3>Condiments: </h3> 
+        <p>{{ item.condiments }}</p> 
+        <!-- posting this form is what actually creates the Customer_order + burger_ordered rows in the database -->
+        <form action="{{ url_for('add_burger_to_cart', product_id=item.id) }}" method="post">  <!-- submits to the add-to-cart route for this specific burger's id -->
+            <button type="submit" class="add-now-btn">Add Now</button>  <!-- the actual clickable button -->
         </form>
     </div>
-    {% endfor %}
+    {% endfor %}  <!-- closes the loop over results -->
 </div>
 
-<div class="menus-sides-button">
-    <a href="/sides">Sides</a>
+<!-- link across to the /sides page (drinks, sauces, food sides) -->
+<div class="menus-sides-button">  <!-- wrapper styled by .menus-sides-button -->
+    <a href="/sides">Sides</a>  <!-- the actual link -->
 </div>
 
-{% endblock %}
+{% endblock %} 
