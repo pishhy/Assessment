@@ -27,7 +27,7 @@ def get_db():
 
 
 @app.teardown_appcontext
-def close_connection(exception):
+def close_connection(_):
     '''closes the database connection that was opened'''
     db = getattr(g, '_database', None)
     if db is not None:
@@ -129,7 +129,7 @@ def add_burger_to_cart(product_id):
 
     db = get_db()
 
-    burger_ordered_id = next_id('burger_ordered') 
+    burger_ordered_id = next_id('burger_ordered')
     db.execute(
         "INSERT INTO burger_ordered (id, products_id, burger_quantity) VALUES (?, ?, ?)",
         [burger_ordered_id, product_id, quantity]
@@ -148,10 +148,11 @@ def add_burger_to_cart(product_id):
     return redirect(request.referrer or url_for('menu'))
 
 # route to add a side (drink, sauce, or food side) to the cart
-@app.route('/add_to_cart/side/<int:side_id>', methods=['POST'])  # called when "Add Now" is pressed on a drink/sauce/food side
+@app.route('/add_to_cart/side/<int:side_id>', methods=['POST'])
 @login_required
 def add_side_to_cart(side_id):
-    quantity = int(request.form.get('quantity', 1))  # how many of this side; defaults to 1 if the form didn't send one
+    '''function that allows the add now button on the side page to be called'''
+    quantity = int(request.form.get('quantity', 1))
 
     db = get_db()
 
@@ -161,10 +162,11 @@ def add_side_to_cart(side_id):
         [sides_ordered_id, side_id, quantity]
     )
 
-    order_id = next_id('Customer_order')  # this row is what actually attaches the item to the logged-in customer
+    order_id = next_id('Customer_order')
     db.execute(
-        "INSERT INTO Customer_order (id, burger_ordered_id, sides_ordered_id, user_id) VALUES (?, ?, ?, ?)",
-        [order_id, None, sides_ordered_id, session['user_id']]  # burger_ordered_id is None here since this insert is only for a side
+        """INSERT INTO Customer_order (id, burger_ordered_id, sides_ordered_id, user_id) 
+        VALUES (?, ?, ?, ?)""",
+        [order_id, None, sides_ordered_id, session['user_id']]
     )
     db.commit()
 
@@ -176,6 +178,7 @@ def add_side_to_cart(side_id):
 @app.route('/cart')
 @login_required
 def cart():
+    '''a function that will allow the added products to be put on the cart page'''
     sql = """
         SELECT
             Customer_order.id AS order_id,
@@ -195,12 +198,12 @@ def cart():
         WHERE Customer_order.user_id = ?
         ORDER BY Customer_order.id
     """
-    order_items = query_db(sql, [session['user_id']]) or []  # "or []" keeps this a list even if query_db ever returned None
+    order_items = query_db(sql, [session['user_id']]) or []
 
     total = 0  # running total of the whole order, in dollars
     for row in order_items:
         if row['burger_price'] is not None:  # this row is a burger line
-            # burger prices are stored as text like "$6.99" in this database, so strip the $ before doing maths
+            # burger prices are stored as text like "$6.99" in this database
             burger_price = float(str(row['burger_price']).replace('$', ''))
             total += burger_price * row['burger_quantity']
         if row['side_price'] is not None:  # this row is a side line
@@ -211,9 +214,10 @@ def cart():
 
 
 # route to remove a single item from the cart
-@app.route('/remove_from_cart/<int:order_id>', methods=['POST'])  # called by the "Remove" button on a single cart item
+@app.route('/remove_from_cart/<int:order_id>', methods=['POST'])
 @login_required
 def remove_from_cart(order_id):
+    '''a function that allows user to remove their products'''
     db = get_db()
     # the "AND user_id = ?" check matters here: without it, anyone could remove items from
     # someone else's cart just by guessing/changing the order_id in the request
@@ -226,10 +230,11 @@ def remove_from_cart(order_id):
     flash("Item removed from your cart.")
     return redirect(url_for('cart'))
 
-#adding a route to submit the order and clear the cart
-@app.route('/submit_order', methods=['POST'])  # called by the "Submit Order" button on the cart page
+#a route to submit the order and clear the cart
+@app.route('/submit_order', methods=['POST'])
 @login_required
 def submit_order():
+    '''function that allows user to submit their order and clear the whole cart'''
     db = get_db()
     # removes every Customer_order row for this user — since the cart page is built entirely
     # from Customer_order, this is what actually empties the cart
@@ -241,30 +246,30 @@ def submit_order():
 
 
 #signup route: creates a new user account in the database
-@app.route('/signup', methods=['GET', 'POST']) 
+@app.route('/signup', methods=['GET', 'POST'])
 def signup():
+    '''function that gives user a for to sign up'''
     if request.method == 'POST':
         username = request.form['username']  # value typed into the "username" input
         password = request.form['password']  # value typed into the "password" input
         address = request.form['address']  # value typed into the "address" input
 
-        existing_user = query_db("SELECT id FROM user WHERE name = ?", [username], one=True)  # checks whether that username is already taken
+        existing_user = query_db("SELECT id FROM user WHERE name = ?", [username], one=True)
         if existing_user is not None:  # someone already signed up with this username
-            flash("That username is already registered, please log in instead.")  # explains why they're being redirected
-            return redirect(url_for('login'))  # sends them to the login page instead of creating a duplicate
-        
-        hashed_password = generate_password_hash(password)  # scrambles the password so the raw text is never stored in the database
-        max_id_row = query_db("SELECT MAX(id) AS max_id FROM user", one=True)  # finds the current highest id (the "user" table's id column doesn't auto-increment on its own); this always returns a row, even on an empty table
-        next_id_row = dict(max_id_row) if max_id_row is not None else {}  # converts the row to a dict for clean key lookups, falling back to an empty dict just in case
-        next_id = (next_id_row.get('max_id') or 0) + 1  # picks the next id, starting at 1 if the table is empty
+            flash("That username is already registered, please log in instead.")
+            return redirect(url_for('login'))
+        hashed_password = generate_password_hash(password)  # scrambles the password
+        max_id_row = query_db("SELECT MAX(id) AS max_id FROM user", one=True)
+        next_id_row = dict(max_id_row) if max_id_row is not None else {}
+        next_id = (next_id_row.get('max_id') or 0) + 1
         db = get_db()  # grabs the current database connection
         db.execute(
-            "INSERT INTO user (id, name, address, password) VALUES (?, ?, ?, ?)",  # adds a new row to the "user" table, including the id we just generated
+            "INSERT INTO user (id, name, address, password) VALUES (?, ?, ?, ?)", 
             [next_id, username, address, hashed_password]
         )
         db.commit()  # saves the new row permanently to the database file
         flash("Account created! You can now log in.")  # queues a success message
-        return redirect(url_for('login'))  # sends the new user to the login page to sign in with their new details
+        return redirect(url_for('login'))  # sends the new user to the login page
 
     return render_template('signup.html')  # GET request: just show the signup form
 
@@ -291,5 +296,5 @@ def unexpected_error(error):
     return render_template('error.html', error=str(error)), 500
 
 
-if __name__ == "__main__":  # only runs when this file is executed directly (e.g. "python app.py"), not when it's imported elsewhere
-    app.run(debug=True)  # debug=True enables auto-reload on code changes and shows detailed error pages while developing
+if __name__ == "__main__":
+    app.run(debug=True)
