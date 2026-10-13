@@ -1,102 +1,117 @@
-from flask import Flask, g, render_template, request, redirect, url_for, flash, session  # request reads form data, redirect/url_for send the browser to another route, flash queues a one-time message, session stores the logged-in user's id
-import sqlite3  # lets Python talk to the SQLite database file
-from functools import wraps  # keeps a wrapped route's name/docstring intact, needed for the login_required decorator below
-from werkzeug.security import generate_password_hash, check_password_hash  # turns a plain password into a scrambled hash, and checks a plain password against a stored hash
+"""Evan burgers flask application for burgers"""
+import sqlite3
+from functools import wraps
+from flask import Flask, g, render_template, request, redirect, url_for, flash, session
+from werkzeug.security import generate_password_hash, check_password_hash
 
 
 
-DATABASE = 'Database/REAL_ASSESSMENT.db' # path to the SQLite database file that get_db() connects to
+DATABASE = 'Database/REAL_ASSESSMENT.db'
 
 
-app = Flask(__name__)  # creates the actual Flask application object that all the @app.route(...) functions attach to
-app.secret_key = 'hiiiiiiiiii'  # needed so Flask can sign session cookies and flash messages; without this, session/flash won't work
+app = Flask(__name__)
+app.secret_key = 'hiiiiiiiiii'
 
 
 def get_db():
-    db = getattr(g, '_database', None)  # checks if a connection was already opened during this request
-    if db is None:  # no connection yet this request
-        db = g._database = sqlite3.connect(DATABASE)  # open one, and store it on "g" so the rest of this request can reuse it
-        db.row_factory = sqlite3.Row  # lets query results be read like dictionaries (row['column']) instead of plain tuples
+    ''' Opens database connection'''
+    # checks if a connection was already opened on this request
+    db = getattr(g, '_database', None)
+    # no connection yet this request
+    if db is None:
+        #store it on "g" so the rest of this request can reuse it
+        db = g._database = sqlite3.connect(DATABASE)
+        #lets query results be read like dictionaries (row['column']) instead of plain tuples
+        db.row_factory = sqlite3.Row
     return db
 
 
-@app.teardown_appcontext  # Flask calls this automatically at the end of every request, success or failure
+@app.teardown_appcontext
 def close_connection(exception):
+    '''closes the database connection that was opened'''
     db = getattr(g, '_database', None)
     if db is not None:
         db.close()  # closes the connection so it doesn't stay open after the request finishes
 
 
 def query_db(query, args=(), one=False):
+    '''handles all the queries that happens on the website'''
     cur = get_db().execute(query, args)
     rv = cur.fetchall()
     cur.close()
     return (rv[0] if rv else None) if one else rv
 
 
-def next_id(table):  # these tables don't auto-increment, so work out the next id ourselves (same pattern the signup route uses for "user")
+def next_id(table):  # these tables don't auto-increment
+    '''finds highest existing id in a database table and returns the next available number.'''
     row = query_db(f"SELECT MAX(id) AS max_id FROM {table}", one=True)
     row = dict(row) if row is not None else {}
     return (row.get('max_id') or 0) + 1
 
 
-def login_required(view):  # put @login_required above any route that needs session['user_id'] to exist
+def login_required(view):  #put @login_required above route that needs session['user_id'] to exist
+    '''this makes it easier for a page needed to be in session to navigate'''
     @wraps(view)
     def wrapped_view(*args, **kwargs):
         if 'user_id' not in session:  # nobody logged in this session
             flash("Please log in first.")
-            return redirect(url_for('login'))  # send them to login instead of crashing on session['user_id']
+            return redirect(url_for('login'))  # send them to login
         return view(*args, **kwargs)
     return wrapped_view
 
 
 @app.route('/')
 def home():
+    '''The function for the home page'''
     return render_template('home.html')  # just shows the homepage, no data needed
 
 #route to show the menu page, which includes all the burgers
 @app.route('/menu')
 def menu():
-    sql = "SELECT id, burgers, price, ingredients, condiments, photo FROM products WHERE burgers IS NOT NULL AND burgers != ''"  # only rows that actually have a burger name, so blank/placeholder rows don't show up
+    '''burgers option for menu option'''
+    sql = """SELECT id, burgers, price, ingredients, condiments, photo
+        FROM products WHERE burgers IS NOT NULL AND burgers != ''"""
     results = query_db(sql)
     return render_template("menus.html", results=results)
 
 #route to show the sides page, which includes drinks, sauces, and food sides
 @app.route('/sides')
 def sides():
-    drinks = query_db("SELECT id, sides, price, photo FROM sides WHERE description='drink'")  # only rows tagged as a drink
-    sauces = query_db("SELECT id, sides, price, photo FROM sides WHERE description='sauce'")  # only rows tagged as a sauce
-    food_sides = query_db("SELECT id, sides, price, photo FROM sides WHERE description='side'")  # only rows tagged as a food side
+    """sides/drink/sauces option for the sides menu"""
+    drinks = query_db("SELECT id, sides, price, photo FROM sides WHERE description='drink'")
+    sauces = query_db("SELECT id, sides, price, photo FROM sides WHERE description='sauce'")
+    food_sides = query_db("SELECT id, sides, price, photo FROM sides WHERE description='side'")
     return render_template("sides.html", drinks=drinks, sauces=sauces, food_sides=food_sides)
 
 
 
-#login route: checks the username and password against the database, and sets session['user_id'] if successful
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    '''Login function that handles what happens on the log in page'''
     if 'user_id' in session:
         return redirect(url_for('logout'))
 
-    if request.method == 'POST': 
+    if request.method == 'POST':
         username = request.form['username']  # value typed into the "username" input
         password = request.form['password']  # value typed into the "password" input
-        user_row = query_db("SELECT * FROM user WHERE name = ?", [username], one=True)  # looks up a row in the "user" table whose "name" matches what was typed
+        user_row = query_db("SELECT * FROM user WHERE name = ?", [username], one=True)
         if user_row is None:  # no account exists with that username
-            flash("We couldn't find that account, please sign up first.")  # queues a message explaining why they're being redirected
+            flash("We couldn't find that account, please sign up first.")
             return redirect(url_for('signup'))
-        user = dict(user_row)  # converts the sqlite3.Row into a plain dict so the key lookups below type-check cleanly
-        if not check_password_hash(user['password'], password):  # compares the typed password against the hashed password stored in the database
+        user = dict(user_row)
+        if not check_password_hash(user['password'], password):
             flash("Incorrect password, please try again.")  # queues an error message
             return redirect(url_for('login'))  # reloads the login page so they can retry
         session['user_id'] = user['id']  # remembers which user is logged in for future requests
-        session['username'] = user['name']  # stores the username too, so it can be shown elsewhere without another query
+        session['username'] = user['name']
         flash(f"Welcome back, {user['name']}!")  # queues a friendly success message
-        return redirect(url_for('home')) 
+        return redirect(url_for('home'))
     return render_template('login.html')
 
 #route to log out the current user, clearing the session
 @app.route('/logout', methods=['GET', 'POST'])
 def logout():
+    '''logout function that clear the user in session'''
     if request.method == 'POST':
         session.clear()  # Clears session ONLY when the button is clicked
         flash("You have been logged out.")
@@ -106,23 +121,25 @@ def logout():
 
 
 # route to add a burger to the cart
-@app.route('/add_to_cart/burger/<int:product_id>', methods=['POST'])  # called when "Add Now" is pressed on a burger card
+@app.route('/add_to_cart/burger/<int:product_id>', methods=['POST'])
 @login_required
 def add_burger_to_cart(product_id):
-    quantity = int(request.form.get('quantity', 1))  # how many of this burger; defaults to 1 if the form didn't send one
+    '''function that allows the add now button on the burger menu page to be interacted'''
+    quantity = int(request.form.get('quantity', 1))
 
     db = get_db()
 
-    burger_ordered_id = next_id('burger_ordered')  # this row represents "this burger, this quantity"
+    burger_ordered_id = next_id('burger_ordered') 
     db.execute(
         "INSERT INTO burger_ordered (id, products_id, burger_quantity) VALUES (?, ?, ?)",
         [burger_ordered_id, product_id, quantity]
     )
 
-    order_id = next_id('Customer_order')  # this row is what actually attaches the item to the logged-in customer
+    order_id = next_id('Customer_order')
     db.execute(
-        "INSERT INTO Customer_order (id, burger_ordered_id, sides_ordered_id, user_id) VALUES (?, ?, ?, ?)",
-        [order_id, burger_ordered_id, None, session['user_id']]  # sides_ordered_id is None here since this insert is only for a burger
+        """INSERT INTO Customer_order (id, burger_ordered_id, sides_ordered_id, user_id)
+        VALUES (?, ?, ?, ?)""",
+        [order_id, burger_ordered_id, None, session['user_id']]
     )
     db.commit()
 
