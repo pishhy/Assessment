@@ -259,13 +259,11 @@ def signup():
             flash("That username is already registered, please log in instead.")
             return redirect(url_for('login'))
         hashed_password = generate_password_hash(password)  # scrambles the password
-        max_id_row = query_db("SELECT MAX(id) AS max_id FROM user", one=True)
-        next_id_row = dict(max_id_row) if max_id_row is not None else {}
-        next_id = (next_id_row.get('max_id') or 0) + 1
+        new_user_id = next_id('user')
         db = get_db()  # grabs the current database connection
         db.execute(
             "INSERT INTO user (id, name, address, password) VALUES (?, ?, ?, ?)", 
-            [next_id, username, address, hashed_password]
+            [new_user_id, username, address, hashed_password]
         )
         db.commit()  # saves the new row permanently to the database file
         flash("Account created! You can now log in.")  # queues a success message
